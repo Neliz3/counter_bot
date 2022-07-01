@@ -1,9 +1,11 @@
 import asyncio
-from config import bot
+from config import bot, admin
 
 
 async def main():
-    print(await bot.get_me())
+    async with bot:
+        print((await bot.get_updates())[0])
+        await bot.send_message(text='Bot started', chat_id=admin)
 
 
 if __name__ == '__main__':
