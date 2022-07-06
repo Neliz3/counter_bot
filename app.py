@@ -1,12 +1,15 @@
-import asyncio
-from config import bot, admin
+from config import application
+import logging
+from handlers.commands import list_handlers
 
 
-async def main():
-    async with bot:
-        print((await bot.get_updates())[0])
-        await bot.send_message(text='Bot started', chat_id=admin)
+# Logging
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    list_handlers()
+    application.run_polling()

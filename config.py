@@ -1,4 +1,4 @@
-import telegram
+from telegram.ext import ApplicationBuilder
 import os
 from dotenv import load_dotenv
 
@@ -8,7 +8,7 @@ load_dotenv('/home/elizabeth/runner_bot/.env')
 
 
 # Initialize a bot
-bot = telegram.Bot(token=os.getenv("TOKEN"))
+application = ApplicationBuilder().token(os.getenv("TOKEN")).build()
 
 
 # Initialize admin
