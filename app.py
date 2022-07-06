@@ -11,5 +11,5 @@ logging.basicConfig(
 
 
 if __name__ == '__main__':
-    list_handlers()
+    application.add_handlers(list_handlers())
     application.run_polling()
