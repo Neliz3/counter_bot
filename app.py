@@ -10,6 +10,10 @@ logging.basicConfig(
 )
 
 
-if __name__ == '__main__':
+def main():
     application.add_handlers(list_handlers())
     application.run_polling()
+
+
+if __name__ == '__main__':
+    main()
