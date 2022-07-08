@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 
 # Initialize environment variables
-load_dotenv('/home/elizabeth/counter_bot/.env')
+load_dotenv('/home/elizabeth/counter_bot/telegram_bot/config/.env')
 
 
 # Initialize a bot
