@@ -1,6 +1,6 @@
-from config import application
+from telegram_bot.config import config
 import logging
-from handlers.commands import list_handlers
+from telegram_bot.handlers.commands import list_handlers
 
 
 # Logging
@@ -11,8 +11,8 @@ logging.basicConfig(
 
 
 def main():
-    application.add_handlers(list_handlers())
-    application.run_polling()
+    config.application.add_handlers(list_handlers())
+    config.application.run_polling()
 
 
 if __name__ == '__main__':
