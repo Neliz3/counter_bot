@@ -29,3 +29,8 @@ Then library for dealing with Heroku server:
 ```bash
 pip install Flask
 ```
+Then install Heroku:
+
+```bash
+curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+```
