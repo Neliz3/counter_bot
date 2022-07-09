@@ -9,14 +9,15 @@ server = Flask(__name__)
 def get_message():
     json_string = request.get_data().decode('utf-8')
     update = config.application.types.Update.de_json(json_string)
-    config.application.process_new_updates([update])
+    config.application.process_update([update])
+    #config.application.process_new_updates([update])
     return '!', 200
 
 
 @server.route('/')
 def webhook():
-    config.application.delete_webhook()
-    config.application.set_webhook(url=config.app_url)
+    config.application.bot.delete_webhook()
+    config.application.bot.set_webhook(url=config.app_url)
     return '!', 200
 
 
