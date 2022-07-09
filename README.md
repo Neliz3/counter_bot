@@ -24,3 +24,8 @@ Then library for getting environmental variables:
 ```bash
 pip install python-dotenv
 ```
+Then library for dealing with Heroku server:
+
+```bash
+pip install Flask
+```

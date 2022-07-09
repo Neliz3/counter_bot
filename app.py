@@ -1,6 +1,7 @@
 from telegram_bot.config import config
 import logging
 from telegram_bot.handlers.commands import list_handlers
+from server.heroku_server import launch_server
 
 
 # Logging
@@ -12,7 +13,7 @@ logging.basicConfig(
 
 def main():
     config.application.add_handlers(list_handlers())
-    config.application.run_polling()
+    launch_server()
 
 
 if __name__ == '__main__':
