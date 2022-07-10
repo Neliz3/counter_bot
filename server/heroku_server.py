@@ -1,3 +1,4 @@
+"""
 from flask import Flask, request
 import telebot
 from config import config
@@ -23,3 +24,4 @@ def webhook():
 
 def launch_server():
     server.run(host='0.0.0.0', port=config.port)
+"""
