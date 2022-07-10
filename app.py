@@ -16,7 +16,7 @@ logging.basicConfig(
 server = Flask(__name__)
 
 
-@server.route('/' + config.token_bot, methods=['POST'])
+@server.route('/' + config.token_bot, methods=['GET'])
 def get_message():
     json_string = request.get_data().decode('utf-8')
     update = telebot.types.Update.de_json(json_string)
