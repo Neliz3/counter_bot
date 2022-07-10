@@ -1,4 +1,4 @@
-from telegram_bot.config import config
+from config import config
 from telegram import Update
 from telegram.ext import MessageHandler, ContextTypes, CommandHandler
 from telegram_bot.filter import filter

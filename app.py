@@ -1,4 +1,4 @@
-from telegram_bot.config import config
+from config import config
 import logging
 from telegram_bot.handlers.commands import list_handlers
 from server.heroku_server import launch_server

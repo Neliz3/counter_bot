@@ -1,5 +1,6 @@
 from flask import Flask, request
-from telegram_bot.config import config
+import telebot
+from config import config
 
 
 server = Flask(__name__)
@@ -8,16 +9,15 @@ server = Flask(__name__)
 @server.route('/' + config.token_bot, methods=['POST'])
 def get_message():
     json_string = request.get_data().decode('utf-8')
-    update = config.application.types.Update.de_json(json_string)
-    config.application.process_update([update])
-    #config.application.process_new_updates([update])
+    update = telebot.types.Update.de_json(json_string)
+    config.bot.process_new_updates([update])
     return '!', 200
 
 
 @server.route('/')
 def webhook():
-    config.application.bot.delete_webhook()
-    config.application.bot.set_webhook(url=config.app_url)
+    config.bot.remove_webhook()
+    config.bot.set_webhook(url=config.app_url)
     return '!', 200
 
 

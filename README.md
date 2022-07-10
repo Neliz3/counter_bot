@@ -29,6 +29,11 @@ Then library for dealing with Heroku server:
 ```bash
 pip install Flask
 ```
+Then library that more fit to work with Telegram and web:
+
+```bash
+pip install pyTelegramBotAPI
+```
 Then install Heroku:
 
 ```bash
