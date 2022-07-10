@@ -13,6 +13,11 @@ logging.basicConfig(
 )
 
 
+@config.bot.message_handler(commands=['start'])
+def start(message):
+    config.bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
+
+
 server = Flask(__name__)
 
 
