@@ -9,13 +9,8 @@ import telebot
 # Logging
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+    level=logging.DEBUG
 )
-
-
-@config.bot.message_handler(commands=['start'])
-def start(message):
-    config.bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
 
 server = Flask(__name__)
@@ -42,6 +37,7 @@ def launch_server():
 
 def main():
     config.application.add_handlers(list_handlers())
+    #config.application.run_polling()
     launch_server()
 
 
