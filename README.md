@@ -2,6 +2,8 @@
 
 Runner is Telegram Bot for dealing with Google Sheets.
 
+## Project development is stopped!
+
 ## Installation
 ```python3 -m venv env```
 
