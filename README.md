@@ -1,8 +1,7 @@
-# Runner Telegram Bot
+# Counter Telegram Bot
 
-Runner is Telegram Bot for dealing with Google Sheets.
+Counter is Telegram Bot for dealing with Google Sheets.
 
-## Project development is stopped!
 
 ## Installation
 ```python3 -m venv env```
@@ -21,23 +20,16 @@ library
 ```bash
 pip install python-telegram-bot --upgrade
 ```
+
+Then install ...
+
+```bash
+pip install telegram
+```
+
 Then library for getting environmental variables:
 
 ```bash
 pip install python-dotenv
 ```
-Then library for dealing with Heroku server:
 
-```bash
-pip install Flask
-```
-Then library that more fit to work with Telegram and web:
-
-```bash
-pip install pyTelegramBotAPI
-```
-Then install Heroku:
-
-```bash
-curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
-```
