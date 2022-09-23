@@ -33,3 +33,19 @@ Then library for getting environmental variables:
 pip install python-dotenv
 ```
 
+Install [a gspread library](https://docs.gspread.org/en/latest/index.html) (a Python API for Google Sheets)
+
+```bash
+pip install gspread
+```
+
+## How to use it?
+1. Open [Google Sheets template](https://docs.google.com/spreadsheets/d/1C-Z0OPYnyKPSjn8_YvrpE4uFIPiw0xQrSTn2OHhPVO4/edit#gid=1785411570)
+2. Click 'File'
+3. Click 'Make a copy'
+4. Choose a name and click 'Make a copy'
+5. Click 'Share' and share access for editing with
+`telegram-bot-service@counter-bot-361806.iam.gserviceaccount.com`
+   
+6. Copy URL of a page and send it to Counter Bot
+7. Use Counter Bot and see results!

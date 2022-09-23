@@ -15,3 +15,7 @@ application = ApplicationBuilder().token(token_bot).build()
 
 # Initialize admin
 admin = os.getenv("ADMIN")
+
+
+# Initialize a database
+db_name = 'users.db'
