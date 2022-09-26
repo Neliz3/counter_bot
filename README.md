@@ -39,6 +39,7 @@ Install [a gspread library](https://docs.gspread.org/en/latest/index.html) (a Py
 pip install gspread
 ```
 
+
 ## How to use it?
 1. Open [Google Sheets template](https://docs.google.com/spreadsheets/d/1C-Z0OPYnyKPSjn8_YvrpE4uFIPiw0xQrSTn2OHhPVO4/edit#gid=1785411570)
 2. Click 'File'

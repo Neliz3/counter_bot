@@ -1,7 +1,6 @@
 from config import config
 import logging
-from telegram_bot.handlers.commands import list_handlers
-from google_sheets.authentication.auth import list_handlers_auth
+from telegram_bot.handlers.commands import list_commands
 
 
 # Logging
@@ -12,10 +11,11 @@ logging.basicConfig(
 
 
 def main():
-    config.application.add_handlers(list_handlers())
-    config.application.add_handler(list_handlers_auth())
+    config.application.add_handlers(list_commands())
     config.application.run_polling()
 
 
 if __name__ == '__main__':
     main()
+
+# TODO bot will create its own table with all values, user need only click start and auth

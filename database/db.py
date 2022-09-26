@@ -16,7 +16,8 @@ def db_connect():
 def new_table():
    connection = db_connect()
    cur = connection.cursor()
-   sql_request = """CREATE TABLE IF NOT EXISTS users (user_id integer, url varchar (130))"""
+   sql_request = """CREATE TABLE IF NOT EXISTS users (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    user_id integer, url varchar (130), value float)"""
    try:
        cur.execute(sql_request)
    except sqlite3.DatabaseError as err:
@@ -51,8 +52,8 @@ def add_user(user_id, url):
     cur = connection.cursor()
     try:
         cur.execute(
-            f"""INSERT INTO users (user_id, url)
-            VALUES ('{user_id}', '{url}');"""
+            f"""INSERT INTO users (user_id, url, value)
+            VALUES ('{user_id}', '{url}', 0);"""
         )
     except sqlite3.DatabaseError as err:
         msg = "Something went wrong. Try again, please"
@@ -101,6 +102,41 @@ def get_url_address(user_id):
             return False
         else:
             return True and url
+    finally:
+        connection.commit()
+        connection.close()
+
+
+def update_value(user_id, value):
+    connection = db_connect()
+    cur = connection.cursor()
+    sql_search = f"""UPDATE users SET value = '{value}' WHERE user_id = '{user_id}';"""
+    try:
+        cur.execute(sql_search)
+    except sqlite3.DatabaseError as err:
+        msg = "The value wasn't added. Try again, please"
+        print(f"Value wasn't added.\n{err}")
+        return msg
+    else:
+        msg = "The value was successfully added"
+        return msg
+    finally:
+        connection.commit()
+        connection.close()
+
+
+def get_value(user_id):
+    connection = db_connect()
+    cur = connection.cursor()
+    sql_search = f"""SELECT value from users WHERE user_id = '{user_id}';"""
+    try:
+        cur.execute(sql_search)
+    except sqlite3.DatabaseError as err:
+        print(f"Getting a value was failed.\n{err}")
+    else:
+        data = cur.fetchone()
+        value = float(data[0])
+        return value
     finally:
         connection.commit()
         connection.close()
