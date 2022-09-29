@@ -98,15 +98,17 @@ def get_url_address(user_id):
         print(f"Getting a url was failed.\n{err}")
     else:
         url = cur.fetchone()
+        url_formatted = url[0]
         if not url:
             return False
         else:
-            return True and url
+            return True and url_formatted
     finally:
         connection.commit()
         connection.close()
 
 
+# Updating a url
 def update_value(user_id, value):
     connection = db_connect()
     cur = connection.cursor()
@@ -125,6 +127,7 @@ def update_value(user_id, value):
         connection.close()
 
 
+# Getting a price
 def get_value(user_id):
     connection = db_connect()
     cur = connection.cursor()

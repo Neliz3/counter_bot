@@ -10,6 +10,3 @@ def user_connect(user_id, url):
             msg = add_user(user_id, url)
     finally:
         return msg
-
-
-# TODO check if the name of a sheet is equal to a month and create a new one if not!
