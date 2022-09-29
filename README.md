@@ -16,7 +16,7 @@
 * [Setup](#Setup)
     * [Technologies Used](#Technologies-Used)
     * [Installation](#Installation)
-    * [Step by step installation](#Step-by-step-installation-(for-developers))
+    * [Step by step installation](#Step-by-step-installation)
     * [Project status](#Project-status)
     * [Room for improvement](#Room-for-improvement)
         * [Future features](#Future-features)
@@ -51,7 +51,7 @@
 ```pip install -r requirements.txt```
 
 
-### Step by step installation (for developers)
+### Step by step installation
 Install [python-telegram-bot](https://pypi.org/project/python-telegram-bot/#introduction)
 library
 
