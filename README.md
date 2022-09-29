@@ -11,18 +11,18 @@
 * [gspread](https://docs.gspread.org/en/latest/index.html) is a Python API for Google Sheets.
 
 
-## Table of context
-* [How to use it?](#How-to-use-it-?)
+## Table of contents
+* [How to use it](#How-to-use-it)
 * [Setup](#Setup)
     * [Technologies Used](#Technologies-Used)
     * [Installation](#Installation)
-    * [Step-by-step installation](Step-by-step-installation-(for-developers))
+    * [Step by step installation](#Step-by-step-installation-(for-developers))
     * [Project status](#Project-status)
     * [Room for improvement](#Room-for-improvement)
-        * [Future features](#Future-features:)
-        * [Future changing](#Future-changing:)
+        * [Future features](#Future-features)
+        * [Future changing](#Future-changing)
 
-## How to use it?
+## How to use it
 1. Open [Google Sheets template](https://docs.google.com/spreadsheets/d/1C-Z0OPYnyKPSjn8_YvrpE4uFIPiw0xQrSTn2OHhPVO4/edit#gid=1785411570)
 2. Click 'Share access' for editing with
 `telegram-bot-service@counter-bot-361806.iam.gserviceaccount.com`
@@ -51,7 +51,7 @@
 ```pip install -r requirements.txt```
 
 
-### Step-by-step installation (for developers)
+### Step by step installation (for developers)
 Install [python-telegram-bot](https://pypi.org/project/python-telegram-bot/#introduction)
 library
 
@@ -82,11 +82,11 @@ pip install gspread
 Project is in progress
 
 ### Room for improvement
-#### Future features:
+#### Future features
 * Adding new languages
 * Adding feature for an admin to get more statistic information
 * Bot will create its own table with all values, user need only click start, pass authentication and choose a template
 
-#### Future changing:
+#### Future changing
 * Replace polling with webhook
 * Check if the name of a sheet is equal to a month and create a new one if not
