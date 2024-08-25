@@ -1,11 +1,11 @@
 from telegram import Update
+from telegram.constants import ParseMode
 from telegram.ext import ContextTypes, CommandHandler, MessageHandler
 import gspread
 from database.db import get_url_address, update_value, get_value
 from telegram_bot.filter import filter
 from google_sheets.authentication.auth import user_connect
 from config import config
-from telegram_bot.keyboards.inline import reply_markup
 from telegram_bot.keyboards.reply import keyboard_reply
 
 
@@ -13,28 +13,20 @@ from telegram_bot.keyboards.reply import keyboard_reply
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=f"Hello, {update.message.from_user.first_name}❗"
+        text=f"Hello, {update.message.from_user.first_name} ;)"
     )
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=f"💲 I'll help you to count your money 💲"
+        text=f"Only 4 steps and I'll help you to count your money 💲"
     )
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="❌ Note: Spending limit is 10% from Income"
-    )
-
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text="❌ Catch an instruction! ☟"
-    )
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=f"❌ Open {config.link_template}"
-             f"\n❌ Click 'Share access' for editing with\n"
-             f"❌ \ntelegram-bot-service@counter-bot-361806.iam.gserviceaccount.com\n"
-             f"❌ Copy URL of a page and send it to me!",
-        reply_markup = reply_markup
+        text=f"1. Open a <a href='{config.link_template}'>template</a>."
+             f"\n2. Make a copy."
+             f"\n3. Click <b>Share access</b> for editing with "
+             f"<code>telegram-bot-service@counter-bot-361806.iam.gserviceaccount.com</code>."
+             f"\n3. Copy generated link and share it with me!",
+        parse_mode=ParseMode.HTML,
     )
 
 
@@ -43,7 +35,6 @@ async def filter_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     user_id = update.message.from_user.id
     line = 'https'
-    msg = ''
     add_msg = ''
 
     if update.message.text.__contains__(line):
@@ -100,7 +91,6 @@ async def filter_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if not before:
                 before = 0
             after = float(before) + new_value
-            #print("Text found at R%sC%s" % (cell.row, cell.col))
             wks2.update_cell(row=cell.row, col=(cell.col + 1), value=after)
 
             g_find = wks2.find('General expenses')

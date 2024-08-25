@@ -2,6 +2,7 @@ from config import config
 import logging
 from telegram_bot.handlers.commands import list_commands
 from telegram_bot.handlers.callback_query import list_query
+from database import db
 
 
 # Logging
@@ -18,4 +19,11 @@ def main():
 
 
 if __name__ == '__main__':
+    db.new_table()
     main()
+
+
+# TODO: find out the source of the error
+# TODO: implement dialog library
+# TODO: change cells
+# TODO: add months logic
