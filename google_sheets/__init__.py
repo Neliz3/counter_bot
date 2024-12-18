@@ -1,4 +1,4 @@
 # flake8: noqa
 
-from . import authentication
-from . import templates
+from . import auth
+from . import commands
