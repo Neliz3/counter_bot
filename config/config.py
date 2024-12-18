@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 
 
 # Initialize environment variables
-#load_dotenv('/home/elizabeth/counter_bot/config/.env')
 load_dotenv()
 
 
@@ -28,7 +27,8 @@ key_phone = ['phone', 'mob', 'mobile']
 key_nutrition = ['food', 'eat', 'cafe', 'restaurant', 'atb']
 key_education = ['book', 'books', 'course', 'certificate', 'english', 'lesson']
 key_health = ['health', 'hygiene', 'pharmacy', 'vitamins', 'doc', 'doctor']
-key_transport = ['bus', 'trolleybus', 'tram', 'train', 'plane', 'aircraft', 'airplane', 'taxi', 'tickets']
+key_transport = ['bus', 'trolleybus', 'tram', 'train', 'plane',
+                 'aircraft', 'airplane', 'taxi', 'tickets']
 key_clothing = ['clothing', 'clothes', 'wear']
 key_way_of_life = ['home', 'trinket']
 key_travelling = ['travel', 'journey', 'trip']
@@ -36,4 +36,6 @@ keys = [key_income, key_apartment, key_phone, key_nutrition, key_education,
         key_health, key_transport, key_clothing, key_way_of_life, key_travelling]
 
 # Initialize links
-link_template = 'https://docs.google.com/spreadsheets/d/1C-Z0OPYnyKPSjn8_YvrpE4uFIPiw0xQrSTn2OHhPVO4/edit#gid=1785411570'
+link_template = ('https://docs.google.com/spreadsheets/d/'
+                 '1C-Z0OPYnyKPSjn8_YvrpE4uFIPiw0xQrSTn2OHhPVO4/'
+                 'edit#gid=1785411570')

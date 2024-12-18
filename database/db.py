@@ -14,17 +14,18 @@ def db_connect():
 
 # Creating a new table
 def new_table():
-   connection = db_connect()
-   cur = connection.cursor()
-   sql_request = """CREATE TABLE IF NOT EXISTS users (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    connection = db_connect()
+    cur = connection.cursor()
+    sql_request = """CREATE TABLE IF NOT EXISTS users
+    (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     user_id integer, url varchar (130), value float)"""
-   try:
-       cur.execute(sql_request)
-   except sqlite3.DatabaseError as err:
-       print(f"Table wasn't created.\n{err}")
-   else:
-       print("Table created successfully")
-   finally:
+    try:
+        cur.execute(sql_request)
+    except sqlite3.DatabaseError as err:
+        print(f"Table wasn't created.\n{err}")
+    else:
+        print("Table created successfully")
+    finally:
         connection.commit()
         connection.close()
 

@@ -17,7 +17,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=f"Only 4 steps and I'll help you to count your money 💲"
+        text="Only 4 steps and I'll help you to count your money 💲"
     )
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -61,7 +61,7 @@ async def filter_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     if update.message.text.lower().__contains__(i):
                         index = config.keys.index(item)
                         break
-            if index == 0:    word_= 'Salary'
+            if index == 0:  word_ = 'Salary'
             elif index == 1:    word_ = 'Apartment'
             elif index == 2:    word_ = 'Mobile phone'
             elif index == 3:    word_ = 'Nutrition'
@@ -81,7 +81,6 @@ async def filter_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             value = float(update.message.text)
             update_value(user_id, value)
             msg = 'Great! Write a category!'
-
 
         elif find_word():
             cell = find_word()
