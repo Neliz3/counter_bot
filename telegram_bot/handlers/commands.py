@@ -123,7 +123,6 @@ async def filter_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Getting a value from a selected field
 async def get_expenses(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.message.from_user.id
-    msg = ''
 
     if get_url_address(user_id):
         url_wks = f'{get_url_address(user_id)}'
@@ -144,7 +143,6 @@ async def get_expenses(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Getting a value from a selected field
 async def get_pocket(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.message.from_user.id
-    msg = ''
 
     if get_url_address(user_id):
         url_wks = f'{get_url_address(user_id)}'

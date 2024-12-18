@@ -1,7 +1,6 @@
 from config import config
 import logging
 from telegram_bot.handlers.commands import list_commands
-from telegram_bot.handlers.callback_query import list_query
 from database import db
 
 
@@ -14,7 +13,6 @@ logging.basicConfig(
 
 def main():
     config.application.add_handlers(list_commands())
-    config.application.add_handler(list_query())
     config.application.run_polling()
 
 
@@ -23,7 +21,6 @@ if __name__ == '__main__':
     main()
 
 
-# TODO: find out the source of the error
 # TODO: implement dialog library
 # TODO: change cells
 # TODO: add months logic
