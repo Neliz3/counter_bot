@@ -1,0 +1,13 @@
+messages:
+  start:
+    main: "Welcome, {name} !"
+    wait: "\n I'm creating a table . . ."
+  categories:
+    main: "Your categories:"
+    cat_income: "<b>Income:</b>\n\n{cat}"
+    cat_monthly_payments: "<b>Monthly Payments:</b>\n\n{cat}"
+    cat_other_expenses: "<b>Other Expenses:</b>\n\n{cat}"
+  help: "This bot helps you with X, Y, and Z. Use the following commands:\n/help - Get help"
+  example: "Type <code>300 taxi</code>\n\n** <i>You should type amount of income/expenses and
+            a category name ot its synonym.</i>"
+#  error: "Oops! Something went wrong. Please try again later."
