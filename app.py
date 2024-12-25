@@ -1,26 +1,31 @@
-from config import config
-import logging
-from telegram_bot.handlers.commands import list_commands
-from database import db
+from config.config import dp, bot, commands
+from telegram_bot.handlers.commands import router
+import asyncio
+from database.db import database
+from telegram_bot.dialogs import register_dialogs
 
 
-# Logging
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
+async def on_startup():
+    await bot.set_my_commands(commands)
+
+    dp.include_router(router)
+    await register_dialogs(dp)
+
+    await dp.start_polling(bot, skip_updates=True)
 
 
-def main():
-    config.application.add_handlers(list_commands())
-    config.application.run_polling()
+async def on_shutdown():
+    await database.close()
 
 
 if __name__ == '__main__':
-    db.new_table()
-    main()
+    asyncio.run(on_startup())
+    asyncio.run(on_shutdown())
 
 
 # TODO: implement dialog library
-# TODO: change cells
 # TODO: add months logic
+
+# setup time
+# setup sheet
+# today's every time

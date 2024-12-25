@@ -1,6 +1,4 @@
-from telegram import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ForceReply
 
 
-button_link = KeyboardButton('open table')
-keyboard_reply = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False,
-                                     keyboard=[[button_link]])
+cash_flow_hint = ForceReply(input_field_placeholder="300 taxi")

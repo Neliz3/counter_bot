@@ -1,7 +1,8 @@
-from database.db import exist_user, add_user
+from database.db import database as db, Database
 from google_sheets.auth import create_copy
 
-def user_connect(user_id):
-    if not exist_user(user_id):
-        sheet_id = create_copy().id
-        add_user(user_id, sheet_id)
+
+async def user_connect(user_id):
+    if not await Database().is_exist_user(db, user_id):
+        spreadsheet_id = await create_copy()
+        await Database().add_user(db, user_id, spreadsheet_id.id)
