@@ -2,6 +2,7 @@ import gspread_asyncio
 from google.oauth2.service_account import Credentials
 from datetime import datetime
 import gspread
+from pyasn1_modules.rfc7906 import aa_keyWrapAlgorithm
 
 
 def get_creds():
@@ -42,6 +43,36 @@ async def get_worksheet_name() -> str:
     return worksheet_name
 
 
+async def clear_range_in_worksheet(sheet_id, worksheet_title, cell_range):
+    """
+    Clears the content of a specified range of cells in a worksheet.
+    """
+    spreadsheet = await get_spreadsheet(sheet_id)
+    worksheet = await spreadsheet.worksheet(worksheet_title)
+
+    cell_list = await worksheet.range(cell_range)
+    for cell in cell_list:
+        cell.value = ""
+    await worksheet.update_cells(cell_list)
+
+
+async def new_worksheet_sync(sheet_id):
+    """
+    Creates a new worksheet using gspread synchronous library.
+    """
+    sync_spreadsheet = gs.open_by_key(sheet_id)
+    last_worksheet_template = sync_spreadsheet.get_worksheet(0)
+
+    new_title = await get_worksheet_name()
+    new_month_worksheet = last_worksheet_template.duplicate(
+        new_sheet_name=new_title, insert_sheet_index=0)
+
+    await clear_range_in_worksheet(sync_spreadsheet.id, new_title, "B2:B18")
+    await clear_range_in_worksheet(sync_spreadsheet.id, new_title, "D2:D18")
+    await clear_range_in_worksheet(sync_spreadsheet.id, new_title, "F2:F18")
+    return new_month_worksheet
+
+
 async def get_worksheet(spreadsheet_id, sheet_name=None):
     """
     Returns a Google Sheet worksheet using spreadsheet ID and sheet name.
@@ -51,7 +82,11 @@ async def get_worksheet(spreadsheet_id, sheet_name=None):
         return await spreadsheet.worksheet(sheet_name)
     else:
         worksheet_name = await get_worksheet_name()
-        return await spreadsheet.worksheet(worksheet_name)
+        # Handle the change of time and name of the worksheet
+        try:
+            return await spreadsheet.worksheet(worksheet_name)
+        except gspread.exceptions.WorksheetNotFound:
+            return await new_worksheet_sync(spreadsheet_id)
 
 
 async def update_worksheet_title_sync(spreadsheet_id, new_title):
