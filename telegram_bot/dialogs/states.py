@@ -2,12 +2,17 @@ from aiogram.fsm.state import State, StatesGroup
 
 
 class SGMain(StatesGroup):
-    start = State()
-    example = State()
+    trainings = State()
+
+
+class SGSetup(StatesGroup):
     change_categories = State()
 
-class SGFlow(StatesGroup):
+
+class SGCashFlow(StatesGroup):
     cash_flow = State()
+    error_cash_flow = State()
+
 
 class SGEmail(StatesGroup):
     email = State()

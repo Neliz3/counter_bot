@@ -1,10 +1,31 @@
+from types import NoneType
+
 from google_sheets.auth import get_worksheet
 from telegram_bot.config import get_message
+from google_sheets.auth import logger_sheets
 
 
-async def update_value(sheet_id, sheet_name, cell, value):
-    worksheet = await get_worksheet(sheet_id, sheet_name)
-    await worksheet.update(cell, value)
+async def update_value(sheet_id, category, value):
+    worksheet = await get_worksheet(sheet_id)
+    cell = await worksheet.find(category.capitalize())
+    value = float(value)
+
+    if cell is None:
+        error_msg = await get_message("cash_flow.error")
+        raise ValueError(error_msg)
+    else:
+        existing_value = await worksheet.cell(cell.row, cell.col + 1)
+        # logger_sheets.warning(f"Value from cell: {existing_value.value}")
+        existing_value = float(existing_value.value) if existing_value and not NoneType else 0
+        value += existing_value
+
+        await worksheet.update_cell(row=cell.row, col=(cell.col + 1), value=value)
+
+
+async def update_category(sheet_id, category, new_title):
+    worksheet = await get_worksheet(sheet_id)
+    cell = await worksheet.find(category.upper())
+    await worksheet.update(new_title, cell)
 
 
 async def get_value(sheet_id, sheet_name, cell):
@@ -41,8 +62,7 @@ async def get_range_values(worksheet, cell_range):
     :param worksheet: The AsyncioGspreadWorksheet object.
     :param cell_range: The range string (e.g., 'A1:C3').
     """
-    values = await worksheet.get_values(cell_range)
-    return values
+    return await worksheet.get_values(cell_range)
 
 
 async def get_categories(sheet_id, pretty: bool = False):

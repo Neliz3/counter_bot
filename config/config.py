@@ -6,6 +6,7 @@ from aiogram.types import BotCommand
 import os
 from dotenv import load_dotenv
 import logging
+import betterlogging as bl
 import sys
 
 # Initialize environment variables
@@ -13,6 +14,9 @@ load_dotenv()
 
 
 # Logging setup
+log_level = logging.INFO
+bl.basic_colorized_config(level=log_level)
+
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO,
@@ -44,16 +48,16 @@ db_name = 'users.db'
 # Initialize lists of categories
 categories = {
     'key_income': ['income', 'salary'],
-    'key_apartment': ['room', 'utilities'],
+    'key_apartment': ['apartment', 'room', 'utilities'],
     'key_phone': ['phone', 'mob', 'mobile'],
-    'key_nutrition': ['food', 'eat', 'cafe', 'restaurant', 'atb'],
-    'key_education': ['book', 'books', 'course', 'certificate', 'english', 'lesson'],
+    'key_nutrition': ['nutrition', 'food', 'eat', 'cafe', 'restaurant', 'atb'],
+    'key_education': ['education', 'book', 'books', 'course', 'certificate', 'english', 'lesson'],
     'key_health': ['health', 'hygiene', 'pharmacy', 'vitamins', 'doc', 'doctor'],
-    'key_transport': ['bus', 'trolleybus', 'tram', 'train', 'plane',
+    'key_transport': ['transport', 'bus', 'trolleybus', 'tram', 'train', 'plane',
                       'aircraft', 'airplane', 'taxi', 'tickets'],
     'key_clothing': ['clothing', 'clothes', 'wear'],
-    'key_house': ['home', 'trinket'],
-    'key_travelling': ['travel', 'journey', 'trip']
+    'key_house': ['house', 'home', 'trinket'],
+    'key_travel': ['travel', 'journey', 'trip']
 }
 
 # Initialize links

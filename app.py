@@ -1,15 +1,17 @@
+from aiogram_dialog import setup_dialogs
 from config.config import dp, bot, commands
 from telegram_bot.handlers.commands import router
 import asyncio
 from database.db import database
-from telegram_bot.dialogs import register_dialogs
+from telegram_bot.dialogs.counter_dialogs import main_dialog, email_dialog, cash_flow_dialog
 
 
 async def on_startup():
     await bot.set_my_commands(commands)
 
     dp.include_router(router)
-    await register_dialogs(dp)
+    dp.include_routers(main_dialog, email_dialog, cash_flow_dialog)
+    setup_dialogs(dp)
 
     await dp.start_polling(bot, skip_updates=True)
 
@@ -21,11 +23,3 @@ async def on_shutdown():
 if __name__ == '__main__':
     asyncio.run(on_startup())
     asyncio.run(on_shutdown())
-
-
-# TODO: implement dialog library
-# TODO: add months logic
-
-# setup time
-# setup sheet
-# today's every time

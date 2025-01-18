@@ -2,7 +2,10 @@ import gspread_asyncio
 from google.oauth2.service_account import Credentials
 from datetime import datetime
 import gspread
-from pyasn1_modules.rfc7906 import aa_keyWrapAlgorithm
+import logging
+
+
+logger_sheets = logging.getLogger("GoogleSheets")
 
 
 def get_creds():

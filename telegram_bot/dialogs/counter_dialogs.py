@@ -13,34 +13,59 @@ from aiogram_dialog.widgets.kbd import (
 )
 from aiogram_dialog.widgets.text import Const, Format, Multi
 from telegram_bot.dialogs.states import SGEmail, SGMain, SGCashFlow
-from telegram_bot.dialogs.getters import get_email, get_start_train, get_cash_flow
-from telegram_bot.dialogs.utils import error, email_type_factory
-from telegram_bot.dialogs.callbacks import entered_email, check_user_input, entered_train_text, invalid_train_text
+from telegram_bot.dialogs.getters import get_email, get_trainings, get_cash_flow
+from telegram_bot.dialogs.callbacks import (entered_email, trainings_type_factory, entered_training_text,
+                                            callback_error, email_type_factory,
+                                            cash_flow_type_factory, entered_cash_flow_text)
 from telegram_bot.config import get_message
 import asyncio
 
-setup_dialog = Dialog(
+
+main_dialog = Dialog(
     Window(
-        Const(asyncio.run(get_message("start.example"))),
+        Const(asyncio.run(get_message("start.trainings"))),
         TextInput(
-            id="start_train",
-            filter=check_user_input,
-            
-        )
-        state=SGMain.start_train,
-        getter=get_start_train,
-)
+            id="trainings",
+            type_factory=trainings_type_factory,
+            on_error=callback_error,
+            on_success=entered_training_text,
+        ),
+        state=SGMain.trainings,
+        getter=get_trainings,
+    ),
 )
 
-# async def email_window():
-#     return Window(
-#         Const("Enter your email address:"),
-#         TextInput(
-#             id="email",
-#             on_error=error,
-#             on_success=entered_email,
-#             type_factory=email_type_factory,
-#         ),
-#         state=SGEmail.email,
-#         getter=get_email,
-#     )
+
+cash_flow_dialog = Dialog(
+    Window(
+        Const("↬"),
+        TextInput(
+            id="cash_flow",
+            on_error=callback_error,
+            on_success=entered_cash_flow_text,
+            type_factory=cash_flow_type_factory,
+        ),
+        state=SGCashFlow.cash_flow,
+        getter=get_cash_flow,
+    ), # TODO: create logic to handle cash flow errors
+    Window(
+        # Const(asyncio.run(get_message("cash_flow.error"))),
+        state=SGCashFlow.error_cash_flow,
+        # Button, choose yes, no ...
+    ),
+)
+
+
+email_dialog = Dialog(
+    Window(
+        Const(asyncio.run(get_message("email"))),
+        TextInput(
+            id="email",
+            on_error=callback_error,
+            on_success=entered_email,
+            type_factory=email_type_factory,
+        ),
+        state=SGEmail.email,
+        getter=get_email,
+    )
+)
