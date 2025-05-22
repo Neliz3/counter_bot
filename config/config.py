@@ -23,6 +23,7 @@ logging.basicConfig(
     stream=sys.stdout,
 )
 
+logger = logging.getLogger(__name__)
 
 # Initialize a bot
 TOKEN = os.getenv("TOKEN")
@@ -33,17 +34,15 @@ dp = Dispatcher(storage=storage, bot=bot)
 
 commands = [
     BotCommand(command="/start", description="Start the bot"),
-    BotCommand(command="/pocket", description="Show Pocket Money"),
-    BotCommand(command="/expenses", description="Show Expenses"),
-    BotCommand(command="/table", description="Get Google Spreadsheet link"),
-    BotCommand(command="/settings", description="Adjust your preferences"),
+    BotCommand(command="/add_income", description="Add income"),
+    # BotCommand(command="/today", description="Show today's expenses"),
+    # BotCommand(command="/pocket", description="Show Pocket Money"),
+    # BotCommand(command="/expenses", description="Show Expenses"),
+    # BotCommand(command="/settings", description="Adjust your preferences"),
 ]
 
-# Initialize admin
-admin = os.getenv("ADMIN")
-
 # Initialize a database
-db_name = 'users.db'
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Initialize lists of categories
 categories = {
@@ -59,8 +58,3 @@ categories = {
     'key_house': ['house', 'home', 'trinket'],
     'key_travel': ['travel', 'journey', 'trip']
 }
-
-# Initialize links
-template_spreadsheet_url = ('https://docs.google.com/spreadsheets/d/'
-                      '1C-Z0OPYnyKPSjn8_YvrpE4uFIPiw0xQrSTn2OHhPVO4/'
-                      'edit#gid=1785411570')

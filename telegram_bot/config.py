@@ -1,9 +1,5 @@
 import yaml
 import aiofiles
-import logging
-
-
-logger_bot = logging.getLogger("TelegramBot")
 
 
 async def load_messages():

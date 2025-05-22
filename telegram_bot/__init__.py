@@ -1,5 +1,5 @@
 # flake8: noqa
-from . import authentication
+from . import dialogs
 from . import config
 from . import filter
 from . import handlers

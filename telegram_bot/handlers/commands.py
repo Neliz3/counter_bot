@@ -1,73 +1,33 @@
-from database.db import database as db, Database
-from telegram_bot.authentication.auth import user_connect
-from google_sheets.commands import get_expenses_value, get_pocket_value, get_categories
-from aiogram.filters import CommandStart
-from aiogram import html
-from aiogram import Router
-from aiogram.filters import Command
-from aiogram_dialog import DialogManager, StartMode
-from telegram_bot.dialogs.states import SGEmail, SGMain, SGCashFlow
-from aiogram.types import Message
-from telegram_bot.config import get_message
-from telegram_bot.keyboards.reply import cash_flow_hint
-import asyncio
+from aiogram import types, Router
+from aiogram.filters import Command, CommandStart
+from telegram_bot.handlers import add_income as ai, manage_start as ms
+from database.redis import get_state
+from config.config import logger
 
 
-router = Router()
+command_router = Router()
 
 
-@router.message(CommandStart())
-async def command_start(message: Message, dialog_manager: DialogManager) -> None:
-    """
-    This handler receives messages with `/start` command
-    """
-
-    name = html.bold(message.from_user.first_name)
-
-    await message.answer(await get_message("start.main", name=name))
-    await message.answer(await get_message("start.wait"))
-
-    user_id = message.from_user.id
-    # TODO: optimize not to go to db each time (maybe temp db)
-
-    await user_connect(user_id)
-    spreadsheet_id = await Database().get_spreadsheet_id(db, user_id)
-
-    await message.answer(await get_message("categories.main"))
-    async for msg in get_categories(spreadsheet_id, pretty=True):
-        await message.answer(msg)
-
-    await dialog_manager.start(SGMain.trainings, mode=StartMode.RESET_STACK)
+@command_router.message(Command("add_income"))
+async def handle_add_income(message: types.Message):
+    await ai.start_income(message)
 
 
-@router.message(Command("pocket"))
-async def command_pocket(message: Message):
-    """
-    This handler receives messages with `/pocket` command
-    """
-    user_id = message.from_user.id
-    spreadsheet_id = await Database().get_spreadsheet_id(db, user_id)
-    pocket_value = await get_pocket_value(spreadsheet_id)
+@command_router.message()
+async def handle_text_input(message: types.Message):
+    state = await get_state(message.from_user.id)
 
-    await message.answer(f'Pocket: {pocket_value}')
-
-
-@router.message(Command("expenses"))
-async def command_expenses(message: Message):
-    """
-    This handler receives messages with `/expenses` command
-    """
-    user_id = message.from_user.id
-    spreadsheet_id = await Database().get_spreadsheet_id(db, user_id)
-    expenses_value = await get_expenses_value(spreadsheet_id)
-
-    await message.answer(f'Expenses for day: {expenses_value}')
+    try:
+        if state == "awaiting_income":
+            await ai.handle_income_value(message)
+        elif state == "confirm_income":
+            await ai.handle_income_confirmation(message)
+        else:
+            await message.answer("I didn’t understand that.")
+    except Exception as e:
+        logger.error("Exception:", e)
 
 
-@router.message(Command("table"))
-async def command_share_sheet(message: Message, dialog_manager: DialogManager):
-    """
-    This handler receives messages with `/table` command
-    """
-
-    await dialog_manager.start(SGEmail.email, mode=StartMode.RESET_STACK)
+@command_router.message(CommandStart)
+async def handle_start_command(message: types.Message):
+    await ms.handle_start(message)

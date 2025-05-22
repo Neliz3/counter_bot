@@ -1,4 +1,10 @@
-from aiogram.types import ForceReply
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 
-cash_flow_hint = ForceReply(input_field_placeholder="300 taxi")
+def confirm_keyboard():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="Yes"), KeyboardButton(text="No")]
+        ],
+        resize_keyboard=True
+    )
