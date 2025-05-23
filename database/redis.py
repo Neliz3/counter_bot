@@ -44,3 +44,11 @@ async def get_temp_spending(user_id) -> float:
 
 async def get_temp_desc(user_id) -> str:
     return await redis_client.get(_key(user_id, "temp_desc"))
+
+
+async def set_temp_cat(user_id: int, desc: str):
+    await redis_client.set(_key(user_id, "temp_cat"), desc, ex=600)
+
+
+async def get_temp_cat(user_id) -> str:
+    return await redis_client.get(_key(user_id, "temp_cat"))

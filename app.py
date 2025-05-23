@@ -24,7 +24,10 @@ if __name__ == '__main__':
 
 
 # TODO: add setup of today statistic
-# TODO: add AI category detection
 # TODO: add category setup for user
 # TODO: add week/month statistic
 # TODO: add income table
+# TODO: add localization
+# TODO: add docker
+# TODO: add tests ??
+# TODO: add alembic for migrations

@@ -1,13 +1,13 @@
 from aiogram import types
 from aiogram.types import ReplyKeyboardRemove
 from database.redis import (set_state, clear_state,
-                            set_temp_spending, get_temp_spending, set_temp_desc, get_temp_desc)
+                            set_temp_spending, get_temp_spending, set_temp_desc, get_temp_desc, get_temp_cat, set_temp_cat)
 from telegram_bot.keyboards.reply import confirm_keyboard
 from database.models import DailyStats, Spending
 from database import SessionLocal
 import datetime
 from config.config import logger
-from telegram_bot.utils import get_category
+from telegram_bot.ai_cat_detection.classifier import get_category
 
 
 async def start_spending(message: types.Message, user_id):
@@ -21,12 +21,12 @@ async def handle_spending_desc(message: types.Message, user_id):
     await set_state(user_id, "awaiting_spending_amount")
 
     await message.answer(f'How much did you spend on `{desc}`?')
+    await set_temp_cat(user_id, await get_category(desc))
 
 
 async def handle_spending_value(message: types.Message, user_id):
     try:
         amount = float(message.text)
-        logger.debug(f"amount: {amount}")
     except ValueError:
         await message.answer("Please enter a valid number.")
         return
@@ -41,18 +41,16 @@ async def handle_spending_value(message: types.Message, user_id):
     )
 
 
-async def handle_spending_confirmation(message: types.Message, user_id):
+async def handle_spending_confirmation(message: types.Message, user_id: int):
     text = message.text.lower()
     db = SessionLocal()
 
     try:
         if text == "yes":
             spending = await get_temp_spending(user_id)
-            logger.debug(f"spending: {spending}")
             desc = await get_temp_desc(user_id)
-            cat = get_category(desc) or "other"
+            cat = await get_temp_cat(user_id)
 
-            db = SessionLocal()
             try:
                 db.add(Spending(
                     user_id=user_id,
@@ -72,7 +70,7 @@ async def handle_spending_confirmation(message: types.Message, user_id):
             finally:
                 db.close()
 
-            await message.answer(f"Spending saved to {cat} category✅", reply_markup=ReplyKeyboardRemove())
+            await message.answer(f"{cat}: -{spending} ✅", reply_markup=ReplyKeyboardRemove())
             await clear_state(user_id)
 
         elif text == "no":

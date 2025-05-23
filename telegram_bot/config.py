@@ -20,3 +20,9 @@ async def get_message(key, **kwargs):
         message_template = message_template.get(k, "Message not found.")
 
     return message_template.format(**kwargs)
+
+
+async def load_category_samples() -> dict[str, str]:
+    async with aiofiles.open("telegram_bot/ai_cat_detection/category_samples.yml", "r") as file:
+        content = await file.read()
+    return yaml.safe_load(content)

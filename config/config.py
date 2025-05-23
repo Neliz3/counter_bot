@@ -43,18 +43,3 @@ commands = [
 
 # Initialize a database
 DATABASE_URL = os.getenv("DATABASE_URL")
-
-# Initialize lists of categories
-categories = {
-    'key_income': ['income', 'salary'],
-    'key_apartment': ['apartment', 'room', 'utilities'],
-    'key_phone': ['phone', 'mob', 'mobile'],
-    'key_nutrition': ['nutrition', 'food', 'eat', 'cafe', 'restaurant', 'atb'],
-    'key_education': ['education', 'book', 'books', 'course', 'certificate', 'english', 'lesson'],
-    'key_health': ['health', 'hygiene', 'pharmacy', 'vitamins', 'doc', 'doctor'],
-    'key_transport': ['transport', 'bus', 'trolleybus', 'tram', 'train', 'plane',
-                      'aircraft', 'airplane', 'taxi', 'tickets'],
-    'key_clothing': ['clothing', 'clothes', 'wear'],
-    'key_house': ['house', 'home', 'trinket'],
-    'key_travel': ['travel', 'journey', 'trip']
-}
