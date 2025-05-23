@@ -11,6 +11,18 @@ class User(Base):
     username = Column(String, nullable=True)
 
     stats = relationship("DailyStats", back_populates="user", cascade="all, delete-orphan")
+    spending = relationship("Spending", backref="user", cascade="all, delete-orphan")
+
+
+class Spending(Base):
+    __tablename__ = "spending"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(ForeignKey("users.id"), nullable=False)
+    date = Column(Date, default=datetime.date.today())
+    amount = Column(Float, nullable=False, default=0.0)
+    category = Column(String, nullable=True)      # Optional: Food, Transport, etc.
+    description = Column(String, nullable=True)   # E.g. "coffee", "uber"
 
 
 class DailyStats(Base):
@@ -22,9 +34,8 @@ class DailyStats(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     date = Column(Date, default=datetime.date.today)
-
+    spending = Column(Float, default=0.0)
     income = Column(Float, default=0.0)
-    spendings = Column(Float, default=0.0)
     total = Column(Float, default=0.0)
 
     user = relationship("User", back_populates="stats")
@@ -32,9 +43,9 @@ class DailyStats(Base):
     def recalculate_total(self):
         if self.income is None:
             self.income = 0.0
-        if self.spendings is None:
-            self.spendings = 0.0
-        self.total = self.income - self.spendings
+        if self.spending is None:
+            self.spending = 0.0
+        self.total = self.income - self.spending
 
     @staticmethod
     def get_or_create(session, user_id, date):

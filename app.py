@@ -1,6 +1,7 @@
 import asyncio
 from config.config import dp, bot, commands
-from telegram_bot.handlers.commands import command_router
+from telegram_bot.handlers.finance_commands import command_router
+from telegram_bot.handlers.manage_start import start_router
 from database import Base, engine
 
 
@@ -13,10 +14,17 @@ async def on_startup():
 
     await bot.set_my_commands(commands)
 
-    dp.include_router(command_router)
+    dp.include_routers(start_router, command_router)
 
     await dp.start_polling(bot, skip_updates=True)
 
 
 if __name__ == '__main__':
     asyncio.run(on_startup())
+
+
+# TODO: add setup of today statistic
+# TODO: add AI category detection
+# TODO: add category setup for user
+# TODO: add week/month statistic
+# TODO: add income table

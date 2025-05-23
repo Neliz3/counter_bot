@@ -14,12 +14,12 @@ load_dotenv()
 
 
 # Logging setup
-log_level = logging.INFO
+log_level = logging.DEBUG
 bl.basic_colorized_config(level=log_level)
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO,
+    level=log_level,
     stream=sys.stdout,
 )
 
@@ -33,8 +33,8 @@ dp = Dispatcher(storage=storage, bot=bot)
 
 
 commands = [
-    BotCommand(command="/start", description="Start the bot"),
     BotCommand(command="/add_income", description="Add income"),
+    BotCommand(command="/add_spending", description="Add spending"),
     # BotCommand(command="/today", description="Show today's expenses"),
     # BotCommand(command="/pocket", description="Show Pocket Money"),
     # BotCommand(command="/expenses", description="Show Expenses"),
