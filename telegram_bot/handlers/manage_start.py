@@ -3,6 +3,7 @@ from aiogram import Router
 from aiogram.filters import CommandStart
 from database.models import User
 from database import SessionLocal
+from database.mongo import initialize_user_categories
 
 
 start_router = Router()
@@ -20,6 +21,9 @@ async def handle_start(message: Message):
             user = User(id=user_id, username=username)
             db.add(user)
             db.commit()
+
+            await initialize_user_categories(user_id)
+
             await message.answer(f"Welcome, {username}!")
         else:
             await message.answer(f"Welcome back, {username}!")

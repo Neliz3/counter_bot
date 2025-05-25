@@ -1,20 +1,21 @@
 import asyncio
 from config.config import dp, bot, commands
-from telegram_bot.handlers.finance_commands import command_router
-from telegram_bot.handlers.manage_start import start_router
+from telegram_bot.handlers import manage_start as ms, statistics as st, user_input_handling as ui, categories as ct
 from database import Base, engine
+from database.mongo import upload_default_categories
 
 
-def init_db():
+async def init_db():
     Base.metadata.create_all(bind=engine)
+    await upload_default_categories()
 
 
 async def on_startup():
-    init_db()
+    await init_db()
 
     await bot.set_my_commands(commands)
 
-    dp.include_routers(start_router, command_router)
+    dp.include_routers(ms.start_router, st.statistics_router, ct.cat_router, ui.user_input_router)
 
     await dp.start_polling(bot, skip_updates=True)
 
@@ -23,8 +24,7 @@ if __name__ == '__main__':
     asyncio.run(on_startup())
 
 
-# TODO: add setup of today statistic
-# TODO: add category setup for user
+# TODO: counting total money through days
 # TODO: add week/month statistic
 # TODO: add income table
 # TODO: add localization

@@ -50,7 +50,7 @@ async def handle_income_confirmation(message: types.Message, user_id):
             db.commit()
             await clear_state(user_id)
             return await message.answer(
-                f"Saved {income} as income ✅",
+                f"✅ Saved {income} as income",
                 reply_markup=ReplyKeyboardRemove())
 
         elif text == "no":

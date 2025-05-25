@@ -21,7 +21,7 @@ async def handle_spending_desc(message: types.Message, user_id):
     await set_state(user_id, "awaiting_spending_amount")
 
     await message.answer(f'How much did you spend on `{desc}`?')
-    await set_temp_cat(user_id, await get_category(desc))
+    await set_temp_cat(user_id, await get_category(user_id, desc))
 
 
 async def handle_spending_value(message: types.Message, user_id):
@@ -70,7 +70,7 @@ async def handle_spending_confirmation(message: types.Message, user_id: int):
             finally:
                 db.close()
 
-            await message.answer(f"{cat}: -{spending} ✅", reply_markup=ReplyKeyboardRemove())
+            await message.answer(f"✅ {cat}: -{spending}", reply_markup=ReplyKeyboardRemove())
             await clear_state(user_id)
 
         elif text == "no":

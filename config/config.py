@@ -35,7 +35,8 @@ dp = Dispatcher(storage=storage, bot=bot)
 commands = [
     BotCommand(command="/add_income", description="Add income"),
     BotCommand(command="/add_spending", description="Add spending"),
-    # BotCommand(command="/today", description="Show today's expenses"),
+    BotCommand(command="/today", description="Show today's expenses"),
+    BotCommand(command="/cats", description="Change categories"),
     # BotCommand(command="/pocket", description="Show Pocket Money"),
     # BotCommand(command="/expenses", description="Show Expenses"),
     # BotCommand(command="/settings", description="Adjust your preferences"),
@@ -43,3 +44,5 @@ commands = [
 
 # Initialize a database
 DATABASE_URL = os.getenv("DATABASE_URL")
+MONGO_URI = os.getenv("MONGO_URI")
+MONGO_DB_NAME = os.getenv("MONGO_DB_NAME")

@@ -15,6 +15,7 @@ betterlogging==1.0.0
 cachetools==5.5.0
 certifi==2024.12.14
 charset-normalizer==3.4.0
+dnspython==2.7.0
 filelock==3.18.0
 flake8==7.1.1
 frozenlist==1.5.0
@@ -61,6 +62,7 @@ nvidia-nvtx-cu12==12.6.77
 oauthlib==3.2.2
 packaging==25.0
 pillow==11.2.1
+prettytable==3.16.0
 propcache==0.2.1
 proto-plus==1.25.0
 protobuf==5.29.2
@@ -71,6 +73,7 @@ pycodestyle==2.12.1
 pydantic==2.9.2
 pydantic_core==2.23.4
 pyflakes==3.2.0
+pymongo==4.13.0
 pyparsing==3.2.0
 python-dotenv==1.0.1
 PyYAML==6.0.2
@@ -88,6 +91,7 @@ SQLAlchemy==2.0.41
 StrEnum==0.4.15
 sympy==1.14.0
 telegram==0.0.1
+texttable==1.7.0
 threadpoolctl==3.6.0
 tokenizers==0.21.1
 torch==2.7.0
@@ -98,4 +102,5 @@ typing_extensions==4.12.2
 tzlocal==5.2
 uritemplate==4.1.1
 urllib3==2.2.3
+wcwidth==0.2.13
 yarl==1.18.3

@@ -2,5 +2,7 @@
 
 from . import add_income
 from . import add_spending
-from . import finance_commands
+from . import categories
+from . import statistics
 from . import manage_start
+from . import user_input_handling

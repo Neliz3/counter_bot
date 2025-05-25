@@ -21,8 +21,8 @@ class Spending(Base):
     user_id = Column(ForeignKey("users.id"), nullable=False)
     date = Column(Date, default=datetime.date.today())
     amount = Column(Float, nullable=False, default=0.0)
-    category = Column(String, nullable=True)      # Optional: Food, Transport, etc.
-    description = Column(String, nullable=True)   # E.g. "coffee", "uber"
+    category = Column(String, nullable=True)
+    description = Column(String, nullable=True)
 
 
 class DailyStats(Base):

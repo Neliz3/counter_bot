@@ -1,7 +1,7 @@
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-from telegram_bot.config import load_category_samples
+from database.mongo import get_user_category_samples
 
 
 class CategoryClassifier:
@@ -30,8 +30,8 @@ class CategoryClassifier:
 
 
 
-async def get_category(desc: str) -> str:
-    categories = await load_category_samples()
+async def get_category(user_id: int, desc: str) -> str:
+    categories = await get_user_category_samples(user_id)
     classifier = CategoryClassifier(categories)
     category = classifier.classify(desc)
     return category

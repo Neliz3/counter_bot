@@ -5,20 +5,20 @@ from config.config import logger
 from database.redis import get_state
 
 
-command_router = Router()
+user_input_router = Router()
 
 
-@command_router.message(Command("add_income"))
+@user_input_router.message(Command("add_income"))
 async def handle_add_income(message: types.Message):
     await ai.start_income(message, message.from_user.id)
 
 
-@command_router.message(Command("add_spending"))
+@user_input_router.message(Command("add_spending"))
 async def handle_add_spending(message: types.Message):
     await asp.start_spending(message, message.from_user.id)
 
 
-@command_router.message()
+@user_input_router.message()
 async def handle_text_input(message: types.Message):
     user_id = message.from_user.id
     state = await get_state(user_id)
@@ -38,6 +38,6 @@ async def handle_text_input(message: types.Message):
         elif state == "confirm_spending":
             await asp.handle_spending_confirmation(message, user_id)
         else:
-            await message.answer("I didn’t understand that.")
+            await message.answer("I don’t understand that.")
     except Exception as e:
         logger.error("Exception: %s", str(e))
