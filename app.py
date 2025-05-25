@@ -23,11 +23,15 @@ async def on_startup():
 if __name__ == '__main__':
     asyncio.run(on_startup())
 
-
-# TODO: counting total money through days
-# TODO: add week/month statistic
-# TODO: add income table
+# TODO: db materialized view
+# TODO: add alembic for migrations
 # TODO: add localization
 # TODO: add docker
 # TODO: add tests ??
-# TODO: add alembic for migrations
+
+
+"""
+Future Updates:
+- income setup
+- over-budget flags
+"""

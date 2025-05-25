@@ -43,11 +43,15 @@ async def handle_income_confirmation(message: types.Message, user_id):
                 if stats.income is None:
                     stats.income = 0.0
                 stats.income += income
-            except Exception as e:
-                logger.error("Exception of stats.income:", e)
-            stats.recalculate_total()
+                stats.recalculate_total()
 
-            db.commit()
+                db.commit()
+
+            except Exception as e:
+                logger.error("Database exception:", e)
+            finally:
+                db.close()
+
             await clear_state(user_id)
             return await message.answer(
                 f"✅ Saved {income} as income",
@@ -63,5 +67,4 @@ async def handle_income_confirmation(message: types.Message, user_id):
             return None
     except Exception as e:
         logger.error("Exception:", e)
-    finally:
-        db.close()
+        return None

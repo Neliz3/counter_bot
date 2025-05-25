@@ -14,7 +14,7 @@ load_dotenv()
 
 
 # Logging setup
-log_level = logging.DEBUG
+log_level = logging.INFO
 bl.basic_colorized_config(level=log_level)
 
 logging.basicConfig(
@@ -36,6 +36,7 @@ commands = [
     BotCommand(command="/add_income", description="Add income"),
     BotCommand(command="/add_spending", description="Add spending"),
     BotCommand(command="/today", description="Show today's expenses"),
+    BotCommand(command="/month", description="Show monthly expenses"),
     BotCommand(command="/cats", description="Change categories"),
     # BotCommand(command="/pocket", description="Show Pocket Money"),
     # BotCommand(command="/expenses", description="Show Expenses"),
