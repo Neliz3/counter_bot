@@ -25,11 +25,9 @@ async def on_startup():
 if __name__ == '__main__':
     asyncio.run(on_startup())
 
-
-# TODO: add localization
+# TODO: add alert
 # TODO: add docker
 # TODO: add tests ??
-# TODO: add alert
 
 
 """

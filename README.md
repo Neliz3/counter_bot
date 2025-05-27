@@ -90,3 +90,9 @@ Project is in progress
 #### Future changing
 * Replace polling with webhook
 * Check if the name of a sheet is equal to a month and create a new one if not
+
+
+##### How to add new language?
+1. Add `{lang_code}.yml` to `telegram_bot/locales`
+2. Add `category_{lang_code}.yml` to `telegram_bot/locales/default_categories`
+3. Add {lang_code} to `LANGUAGES` tuple in `config/config.py`

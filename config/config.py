@@ -33,17 +33,19 @@ storage = MemoryStorage()
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher(storage=storage, bot=bot)
 
-# Setup User Settings
+
+# Language setup
 DEFAULT_LANG = "uk"
+LANGUAGES = ("uk", "en")
 
 
-# Setup commands
+# Setup commands | EN - UK languages support
 commands = [
-    BotCommand(command="/add_income", description="Add income"),
-    BotCommand(command="/add_spending", description="Add spending"),
-    BotCommand(command="/today", description="Show today's expenses"),
-    BotCommand(command="/month", description="Show monthly expenses"),
-    BotCommand(command="/cats", description="Change categories"),
+    BotCommand(command="/add_income", description="Додати дохід"),
+    BotCommand(command="/add_spending", description="Додати витрати"),
+    BotCommand(command="/today", description="Статистика за сьогодні"),
+    BotCommand(command="/month", description="Статистика за місяць"),
+    BotCommand(command="/cats", description="Змінити категорії"),
 ]
 
 

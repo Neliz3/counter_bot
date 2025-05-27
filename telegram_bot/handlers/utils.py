@@ -84,4 +84,4 @@ async def get_monthly_stats(session, user_id, year, month):
 
 
 def get_localized_date(date: datetime.date, user_lang: str = DEFAULT_LANG) -> str:
-    return format_date(date, format="LLLL d", locale=user_lang)
+    return format_date(date, format="LLLL d", locale=user_lang).capitalize()
