@@ -2,7 +2,8 @@ from sqlalchemy import func
 import datetime
 from calendar import monthrange
 from database.models import Spending, DailyStats
-from config.config import logger
+from babel.dates import format_date
+from config.config import DEFAULT_LANG
 
 
 async def get_today_stats(session, user_id):
@@ -80,3 +81,7 @@ async def get_monthly_stats(session, user_id, year, month):
     total_spending = totals[1] or 0.0
 
     return spending_data, total_income, total_spending
+
+
+def get_localized_date(date: datetime.date, user_lang: str = DEFAULT_LANG) -> str:
+    return format_date(date, format="LLLL d", locale=user_lang)

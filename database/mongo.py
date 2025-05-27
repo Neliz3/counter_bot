@@ -1,7 +1,11 @@
 import yaml
 import aiofiles
-from . import categories_collection
+import os
 from config.config import logger
+from . import categories_collection
+
+
+CATEGORIES_FOLDER = "telegram_bot/locales/default_categories"
 
 
 async def add_category_group(user_id: int, group_name: str, items: list[str]):
@@ -44,21 +48,26 @@ async def get_category_values(user_id: int) -> list[str]:
 
 
 async def upload_default_categories():
-    async with aiofiles.open("telegram_bot/default_categories.yml", "r", encoding="utf-8") as file:
-        content = await file.read()
+    for filename in os.listdir(CATEGORIES_FOLDER):
+        if filename.startswith("category_") and filename.endswith(".yml"):
+            language = filename.split("_")[1].split(".")[0]  # "en", "ua", etc.
+            key = f"default_{language}"
+            filepath = os.path.join(CATEGORIES_FOLDER, filename)
 
-        default_data = yaml.safe_load(content)
+            async with aiofiles.open(filepath, "r", encoding="utf-8") as file:
+                content = await file.read()
+                categories = yaml.safe_load(content)
 
-    await categories_collection.update_one(
-        {"_id": "default"},
-        {"$set": {"categories": default_data}},
-        upsert=True
-    )
+            await categories_collection.update_one(
+                {"_id": key},
+                {"$set": {"categories": categories}},
+                upsert=True
+            )
 
 
 
-async def initialize_user_categories(user_id: int):
-    default_doc = await categories_collection.find_one({"_id": "default"})
+async def initialize_user_categories(user_id: int, lang: str = "uk"):
+    default_doc = await categories_collection.find_one({"_id": f"default_{lang}"})
     if not default_doc:
         raise Exception("Default categories not uploaded yet")
 

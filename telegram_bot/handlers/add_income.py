@@ -6,35 +6,50 @@ from database.models import DailyStats
 from database import SessionLocal
 import datetime
 from config.config import logger
+from telegram_bot.handlers.manage_start import i18n
 
 
 async def start_income(message: types.Message, user_id):
     await set_state(user_id, "awaiting_income")
-    await message.answer("How much did you earn?")
+    return await message.answer(
+        await i18n.get(
+            key="messages.income.awaiting_income",
+            user_id=user_id
+        ))
 
 
 async def handle_income_value(message: types.Message, user_id):
     try:
         income = float(message.text.strip())
     except ValueError:
-        return await message.answer("Please enter a valid number.")
+        return await message.answer(
+            await i18n.get(
+                key="messages.error.ValueError",
+                user_id=user_id
+            ))
 
     await set_temp_income(user_id, income)
     await set_state(user_id, "confirm_income")
 
-    await message.answer(
-        f"You entered {income}. Confirm?",
-        reply_markup=confirm_keyboard()
+    return await message.answer(
+        await i18n.get(
+            key="messages.income.confirm",
+            income=income,
+            user_id=user_id
+        ),
+        reply_markup=await confirm_keyboard(user_id=user_id)
     )
-    return None
 
 
 async def handle_income_confirmation(message: types.Message, user_id):
-    text = message.text.lower()
+    text = message.text
     db = SessionLocal()
 
+    yes = await i18n.get(key="messages.confirm.yes", user_id=user_id)
+    no = await i18n.get(key="messages.confirm.no", user_id=user_id)
+
     try:
-        if text == "yes":
+        if text == yes:
             income = await get_temp_income(user_id)
             today = datetime.date.today()
 
@@ -54,17 +69,31 @@ async def handle_income_confirmation(message: types.Message, user_id):
 
             await clear_state(user_id)
             return await message.answer(
-                f"✅ Saved {income} as income",
-                reply_markup=ReplyKeyboardRemove())
+                await i18n.get(
+                    key="messages.income.success",
+                    income=income,
+                    user_id=user_id
+                ),
+                reply_markup=ReplyKeyboardRemove()
+            )
 
-        elif text == "no":
+        elif text == no:
             await clear_state(user_id)
             return await message.answer(
-                "Canceled.",
-                reply_markup=ReplyKeyboardRemove())
+                await i18n.get(
+                    key="messages.cancel",
+                    user_id=user_id
+                ),
+                reply_markup=ReplyKeyboardRemove()
+            )
+
         else:
-            await message.answer("Please type Yes or No.")
-            return None
+            return await message.answer(
+                await i18n.get(
+                    key="messages.error.nonexistent",
+                    user_id=user_id
+                ))
+
     except Exception as e:
         logger.error("Exception:", e)
         return None

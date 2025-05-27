@@ -1,4 +1,4 @@
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from telegram_bot.dialogs.states import CategoryDialog
@@ -10,6 +10,8 @@ from telegram_bot.keyboards.reply import (
 from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardRemove
 from database.mongo import get_category_names, delete_category_group, add_category_group
+from telegram_bot.handlers.manage_start import i18n
+from telegram_bot.filters.text_i18n import TextI18nFilter
 
 
 cat_router = Router()
@@ -19,42 +21,62 @@ cat_router = Router()
 async def start_categories_dialog(message: Message, state: FSMContext):
     user_id = message.from_user.id
     category_names = await get_category_names(user_id)
+    cat_list_str = await i18n.get(key="messages.categories.cat_list", user_id=user_id)
 
     await message.answer(
-        "🏷 Your categories:\n" + "\n".join(f"- {c}" for c in category_names))
-    await message.answer("What do you want to do?",
-                         reply_markup=category_actions_keyboard())
+        cat_list_str + "\n".join(f"- {c}" for c in category_names))
+    await message.answer(
+        await i18n.get(key="messages.categories.action_qa", user_id=user_id),
+        reply_markup=await category_actions_keyboard(user_id),
+    )
     await state.set_state(CategoryDialog.ChoosingAction)
 
 
-@cat_router.message(CategoryDialog.ChoosingAction, F.text == "➕ Add")
+@cat_router.message(CategoryDialog.ChoosingAction, TextI18nFilter("buttons.add_cat"))
 async def ask_new_category_name(message: Message, state: FSMContext):
-    await message.answer("Enter the name of the new category:")
+    await message.answer(
+        await i18n.get(key="messages.categories.ask_cat_name", user_id=message.from_user.id)
+    )
     await state.set_state(CategoryDialog.Adding)
 
 
 @cat_router.message(CategoryDialog.Adding)
 async def confirm_new_category(message: Message, state: FSMContext):
+    user_id = message.from_user.id
+
     await state.update_data(new_category=message.text.strip())
     await message.answer(
-        f'Add "{message.text.strip()}" to your categories?',
-        reply_markup=confirm_keyboard())
+        await i18n.get(
+            key="messages.categories.confirm_new_name",
+            new_name=message.text.strip(),
+            user_id=user_id),
+        reply_markup=await confirm_keyboard(user_id=user_id)
+    )
     await state.set_state(CategoryDialog.ConfirmAdd)
 
 
-@cat_router.message(CategoryDialog.ConfirmAdd, F.text == "Yes")
+@cat_router.message(CategoryDialog.ConfirmAdd, TextI18nFilter("messages.confirm.yes"))
 async def ask_for_keywords(message: Message, state: FSMContext):
     data = await state.get_data()
     cat = data["new_category"]
     await message.answer(
-        f'Now enter keywords for the category "{cat}" (comma-separated).\nExample: gym, trainer, weights'
+        await i18n.get(
+            key="messages.categories.ask_key_words",
+            cat=cat,
+            user_id=message.from_user.id),
+        parse_mode='Markdown',
     )
     await state.set_state(CategoryDialog.AddingKeywords)
 
 
-@cat_router.message(CategoryDialog.ConfirmAdd, F.text == "No")
+@cat_router.message(CategoryDialog.ConfirmAdd, TextI18nFilter("messages.confirm.no"))
 async def cancel_add_category(message: Message, state: FSMContext):
-    await message.answer("❌ Cancelled.", reply_markup=ReplyKeyboardRemove())
+    user_id = message.from_user.id
+
+    await message.answer(
+        await i18n.get(key="messages.cancel", user_id=user_id),
+        reply_markup=ReplyKeyboardRemove()
+    )
     await state.set_state(CategoryDialog.ChoosingAction)
 
 
@@ -70,55 +92,90 @@ async def save_category_with_keywords(message: Message, state: FSMContext):
     key_words = [kw.strip() for kw in raw_text.split(",") if kw.strip()]
 
     if not key_words:
-        await message.answer("❌ Please enter at least one keyword, separated by commas.")
+        await message.answer(
+            await i18n.get(
+                key="messages.categories.error",
+                user_id=user_id,
+            )
+        )
         return
 
     await add_category_group(user_id, cat, key_words)
 
     await message.answer(
-        f'✅ Category "{cat}" added with keywords: {", ".join(key_words)}',
-        reply_markup=ReplyKeyboardRemove())
+        await i18n.get(
+            key="messages.categories.success_add",
+            cat=cat,
+            user_id=user_id,
+        ) + ", ".join(key_words),
+        reply_markup=ReplyKeyboardRemove()
+    )
     await state.set_state(CategoryDialog.ChoosingAction)
 
 
-@cat_router.message(CategoryDialog.ChoosingAction, F.text == "🗑 Delete")
+@cat_router.message(CategoryDialog.ChoosingAction, TextI18nFilter("buttons.del_cat"))
 async def choose_category_delete(message: Message, state: FSMContext):
     user_id = message.from_user.id
     category_names = await get_category_names(user_id)
 
     await message.answer(
-        "Choose a category to delete:",
-        reply_markup=category_list_keyboard(category_names))
+        await i18n.get(
+            key="messages.categories.ask_cat_del",
+            user_id=user_id,
+        ),
+        reply_markup=await category_list_keyboard(category_names),
+    )
     await state.set_state(CategoryDialog.DeletingChoose)
 
 
 @cat_router.message(CategoryDialog.DeletingChoose)
 async def confirm_delete_category(message: Message, state: FSMContext):
+    user_id = message.from_user.id
     cat = message.text.strip()
+
     await state.update_data(delete_category=cat)
     await message.answer(
-        f'Delete "{cat}"? This action cannot be undone.',
-        reply_markup=confirm_keyboard()
+        await i18n.get(
+            key="messages.categories.confirm_del",
+            cat=cat,
+            user_id=user_id,
+        ),
+        reply_markup=await confirm_keyboard(user_id=user_id),
     )
     await state.set_state(CategoryDialog.ConfirmDelete)
 
 
-@cat_router.message(CategoryDialog.ConfirmDelete, F.text == "Yes")
+@cat_router.message(CategoryDialog.ConfirmDelete, TextI18nFilter("messages.confirm.yes"))
 async def delete_category(message: Message, state: FSMContext):
     user_id = message.from_user.id
     data = await state.get_data()
     cat = data["delete_category"]
 
     if await delete_category_group(user_id, cat):
-        await message.answer("✅ Deleted successfully.", reply_markup=ReplyKeyboardRemove())
+        await message.answer(
+            await i18n.get(
+                key="messages.categories.success_del",
+                user_id=user_id,
+            ),
+            reply_markup=ReplyKeyboardRemove(),
+        )
     else:
         await message.answer(
-            "❌ Category not found.",
-            reply_markup=category_actions_keyboard())
+            await i18n.get(
+                key="messages.categories.not_found_error",
+                user_id=user_id,
+            ),
+            reply_markup=await category_actions_keyboard(user_id),
+        )
     await state.set_state(CategoryDialog.ChoosingAction)
 
 
-@cat_router.message(CategoryDialog.ConfirmDelete, F.text == "No")
+@cat_router.message(CategoryDialog.ConfirmDelete, TextI18nFilter("messages.confirm.no"))
 async def cancel_delete(message: Message, state: FSMContext):
-    await message.answer("❌ Cancelled.", reply_markup=ReplyKeyboardRemove())
+    user_id = message.from_user.id
+
+    await message.answer(
+        await i18n.get(key="messages.cancel", user_id=user_id),
+        reply_markup=ReplyKeyboardRemove()
+    )
     await state.set_state(CategoryDialog.ChoosingAction)

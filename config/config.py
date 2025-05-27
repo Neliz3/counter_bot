@@ -9,6 +9,7 @@ import logging
 import betterlogging as bl
 import sys
 
+
 # Initialize environment variables
 load_dotenv()
 
@@ -25,23 +26,26 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
+
 # Initialize a bot
 TOKEN = os.getenv("TOKEN")
 storage = MemoryStorage()
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher(storage=storage, bot=bot)
 
+# Setup User Settings
+DEFAULT_LANG = "uk"
 
+
+# Setup commands
 commands = [
     BotCommand(command="/add_income", description="Add income"),
     BotCommand(command="/add_spending", description="Add spending"),
     BotCommand(command="/today", description="Show today's expenses"),
     BotCommand(command="/month", description="Show monthly expenses"),
     BotCommand(command="/cats", description="Change categories"),
-    # BotCommand(command="/pocket", description="Show Pocket Money"),
-    # BotCommand(command="/expenses", description="Show Expenses"),
-    # BotCommand(command="/settings", description="Adjust your preferences"),
 ]
+
 
 # Initialize a database
 DATABASE_URL = os.getenv("DATABASE_URL")

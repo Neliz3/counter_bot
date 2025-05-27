@@ -7,11 +7,16 @@ from database import SessionLocal
 from config.config import logger
 from telegram_bot.ai_cat_detection.classifier import get_category
 from database.utils import add_spending
+from telegram_bot.handlers.manage_start import i18n
 
 
 async def start_spending(message: types.Message, user_id):
     await set_state(user_id, "awaiting_spending_desc")
-    await message.answer(f'What did you spend on?')
+    return await message.answer(
+        await i18n.get(
+            key="messages.spending.awaiting_spending_desc",
+            user_id=user_id
+        ))
 
 
 async def handle_spending_desc(message: types.Message, user_id):
@@ -19,7 +24,15 @@ async def handle_spending_desc(message: types.Message, user_id):
     await set_temp_desc(user_id, desc)
     await set_state(user_id, "awaiting_spending_amount")
 
-    await message.answer(f'How much did you spend on `{desc}`?')
+    await message.answer(
+        await i18n.get(
+            key="messages.spending.awaiting_spending_amount",
+            desc=desc,
+            user_id=user_id
+        ),
+    parse_mode='Markdown'
+    )
+
     cat = await get_category(user_id, desc)
     await set_temp_cat(user_id, cat)
 
@@ -28,25 +41,37 @@ async def handle_spending_value(message: types.Message, user_id):
     try:
         amount = float(message.text)
     except ValueError:
-        await message.answer("Please enter a valid number.")
-        return
+        return await message.answer(
+            await i18n.get(
+                key="messages.error.ValueError",
+                user_id=user_id
+            ))
 
     await set_temp_spending(user_id, amount)
     desc = await get_temp_desc(user_id)
     await set_state(user_id, "confirm_spending")
 
-    await message.answer(
-        f'You spent {amount} on "{desc}". Confirm?',
-        reply_markup=confirm_keyboard()
+    return await message.answer(
+        await i18n.get(
+            key="messages.spending.confirm",
+            amount=amount,
+            desc=desc,
+            user_id=user_id
+        ),
+        reply_markup=await confirm_keyboard(user_id=user_id),
+        parse_mode='Markdown'
     )
 
 
 async def handle_spending_confirmation(message: types.Message, user_id: int):
-    text = message.text.lower()
+    text = message.text
     db = SessionLocal()
 
+    yes = await i18n.get(key="messages.confirm.yes", user_id=user_id)
+    no = await i18n.get(key="messages.confirm.no", user_id=user_id)
+
     try:
-        if text == "yes":
+        if text == yes:
             amount = await get_temp_spending(user_id)
             desc = await get_temp_desc(user_id)
             cat = await get_temp_cat(user_id)
@@ -58,17 +83,37 @@ async def handle_spending_confirmation(message: types.Message, user_id: int):
             finally:
                 db.close()
 
-            await message.answer(f"✅ {cat}: -{amount}", reply_markup=ReplyKeyboardRemove())
+            await message.answer(
+                await i18n.get(
+                    key="messages.spending.success",
+                    amount=amount,
+                    cat=cat,
+                    user_id=user_id
+                ),
+                reply_markup=ReplyKeyboardRemove(),
+                parse_mode='Markdown'
+            )
+
             await clear_state(user_id)
             return None
 
-        elif text == "no":
+        elif text == no:
             await clear_state(user_id)
-            await message.answer("Canceled.", reply_markup=ReplyKeyboardRemove())
-            return None
+            return await message.answer(
+                await i18n.get(
+                    key="messages.cancel",
+                    user_id=user_id
+                ),
+                reply_markup=ReplyKeyboardRemove()
+            )
+
         else:
-            await message.answer("Please type Yes or No.")
-            return None
+            return await message.answer(
+                await i18n.get(
+                    key="messages.error.nonexistent",
+                    user_id=user_id
+                ))
+
     except Exception as e:
         logger.error("Exception:", e)
         return None
