@@ -19,7 +19,8 @@ async def handle_start(message: Message):
     username = message.from_user.username or message.from_user.first_name or "🥳"
 
     # Store user language
-    user_lang = message.from_user.language_code in LANGUAGES or DEFAULT_LANG
+    user_lang = message.from_user.language_code
+    user_lang = user_lang if user_lang in LANGUAGES else DEFAULT_LANG
 
     await clear_user_lang(user_id)
     await set_user_lang(user_id, user_lang)

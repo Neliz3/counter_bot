@@ -1,8 +1,13 @@
 messages:
   start:
-    welcome: "Welcome, {name}!"
+    welcome: "Welcome, {name}!\nI'll help you to manage your money 🤑"
     welcome_back: "Welcome back, {name}!"
-    help: "You can use /add_income or /add_spending to get started."
+    help: "You can use\n
+          \n/add_income - Add income
+          \n/add_spending - Add expenses
+          \n/today - Today money's summary
+          \n/month - Month money's summary
+          \n/cats - Change categories"
 
   income:
     awaiting_income: "How much did you earn?"
@@ -42,6 +47,8 @@ messages:
 
     error: "No expenses recorded today."
 
+  reminder:
+    msg: "💰 Don't forget to add your transactions for today!"
 
   confirm:
     "yes": "Yes"

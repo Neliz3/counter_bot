@@ -53,7 +53,7 @@ async def handle_today_stats(message: Message):
 
             expenses_block = today_table.get_string()
 
-        await message.answer(f"<code>{expenses_block}</code>", parse_mode="HTML")
+        await message.answer(f"<pre>{expenses_block}</pre>", parse_mode="HTML")
 
 
 @statistics_router.message(Command("month"))
@@ -111,7 +111,7 @@ async def show_month_stats(message: Message):
             month_table.align[amount_str] = 'c'
             month_table.align[percentage_str] = 'c'
 
-            month_table.padding_width = 0 # TODO: check on the phone, if not - use <pre> tag
+            month_table.padding_width = 0
             expenses_block = month_table.get_string()
 
-        await message.answer(f"<code>{expenses_block}</code>", parse_mode="HTML")
+        await message.answer(f"<pre>{expenses_block}</pre>", parse_mode="HTML")

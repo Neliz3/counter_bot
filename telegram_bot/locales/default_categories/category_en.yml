@@ -1,16 +1,3 @@
-Eating out & Drinks:
-  - restaurant
-  - cafe
-  - coffee
-  - dining out
-  - takeaway
-  - coffee
-  - beer
-  - wine
-  - cocktail
-  - milkshake
-  - tea
-
 Food:
   - groceries
   - supermarket
@@ -23,6 +10,19 @@ Food:
   - meat
   - dairy
   - market
+
+Eating out & Drinks:
+  - restaurant
+  - cafe
+  - coffee
+  - dining out
+  - takeaway
+  - coffee
+  - beer
+  - wine
+  - cocktail
+  - milkshake
+  - tea
 
 Travel:
   - vacation
