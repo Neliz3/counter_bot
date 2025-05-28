@@ -11,7 +11,7 @@ async def confirm_keyboard(user_id: int):
             [KeyboardButton(text=yes), KeyboardButton(text=no)]
         ],
         resize_keyboard=True,
-        one_time_keyboard = True
+        one_time_keyboard=True
     )
 
 

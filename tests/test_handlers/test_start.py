@@ -1,3 +1,6 @@
+# flake8: noqa: F841
+# Not to trigger 'assigned but never used'
+
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 from telegram_bot.handlers.manage_start import handle_start

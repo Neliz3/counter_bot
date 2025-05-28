@@ -7,7 +7,7 @@ from database.mongo import get_user_category_samples
 class CategoryClassifier:
     def __init__(self, category_examples: dict):
         """
-        category_examples: dict of category with example phrases
+        Category_examples: dict of categories with example phrases
         """
         self.model = SentenceTransformer('all-MiniLM-L6-v2')
         self.categories = []
@@ -27,7 +27,6 @@ class CategoryClassifier:
         similarities = cosine_similarity(user_embedding, self.example_embeddings)
         best_match_index = np.argmax(similarities)
         return self.example_labels[best_match_index]
-
 
 
 async def get_category(user_id: int, desc: str) -> str:

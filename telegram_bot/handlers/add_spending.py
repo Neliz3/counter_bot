@@ -1,7 +1,9 @@
 from aiogram import types
 from aiogram.types import ReplyKeyboardRemove
 from database.redis import (set_state, clear_state,
-                            set_temp_spending, get_temp_spending, set_temp_desc, get_temp_desc, get_temp_cat, set_temp_cat)
+                            set_temp_spending, get_temp_spending,
+                            set_temp_desc, get_temp_desc,
+                            get_temp_cat, set_temp_cat)
 from telegram_bot.keyboards.reply import confirm_keyboard
 from database import SessionLocal
 from config.config import logger
@@ -30,7 +32,7 @@ async def handle_spending_desc(message: types.Message, user_id):
             desc=desc,
             user_id=user_id
         ),
-    parse_mode='Markdown'
+        parse_mode='Markdown',
     )
 
     cat = await get_category(user_id, desc)

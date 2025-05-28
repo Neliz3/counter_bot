@@ -80,7 +80,6 @@ async def cancel_add_category(message: Message, state: FSMContext):
     await state.set_state(CategoryDialog.ChoosingAction)
 
 
-
 @cat_router.message(CategoryDialog.AddingKeywords)
 async def save_category_with_keywords(message: Message, state: FSMContext):
     user_id = message.from_user.id

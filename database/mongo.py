@@ -50,7 +50,8 @@ async def get_category_values(user_id: int) -> list[str]:
 async def upload_default_categories():
     for filename in os.listdir(CATEGORIES_FOLDER):
         if filename.startswith("category_") and filename.endswith(".yml"):
-            language = filename.split("_")[1].split(".")[0]  # "en", "ua", etc.
+            parts = filename.removeprefix("category_").removesuffix(".yml")
+            language = parts.strip()
             key = f"default_{language}"
             filepath = os.path.join(CATEGORIES_FOLDER, filename)
 
@@ -63,7 +64,6 @@ async def upload_default_categories():
                 {"$set": {"categories": categories}},
                 upsert=True
             )
-
 
 
 async def initialize_user_categories(user_id: int, lang: str = "uk"):

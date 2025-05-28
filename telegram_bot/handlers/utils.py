@@ -26,7 +26,6 @@ async def get_today_stats(session, user_id):
                       .scalar()
                   ) or 0.0
 
-
     # Total income for this month
     total_month_income = (
         session.query(func.sum(DailyStats.income))

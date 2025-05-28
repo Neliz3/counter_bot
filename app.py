@@ -1,6 +1,8 @@
 import asyncio
 from config.config import dp, bot, commands
-from telegram_bot.handlers import manage_start as ms, statistics as st, user_input_handling as ui, categories as ct
+from telegram_bot.handlers import (
+    manage_start as ms, statistics as st, user_input_handling as ui, categories as ct
+)
 from database import Base, engine
 from database.mongo import upload_default_categories
 from telegram_bot.filters.text_i18n import TextI18nFilter
@@ -24,7 +26,6 @@ async def on_startup():
 
 if __name__ == '__main__':
     asyncio.run(on_startup())
-
 
 # TODO: add docker
 
