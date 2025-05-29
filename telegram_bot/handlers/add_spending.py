@@ -4,7 +4,7 @@ from database.redis import (set_state, clear_state,
                             set_temp_spending, get_temp_spending,
                             set_temp_desc, get_temp_desc,
                             get_temp_cat, set_temp_cat)
-from telegram_bot.keyboards.reply import confirm_keyboard
+from telegram_bot.keyboards.reply import confirm_keyboard, cancel_button
 from database import SessionLocal
 from config.config import logger
 from telegram_bot.ai_cat_detection.classifier import get_category
@@ -18,7 +18,9 @@ async def start_spending(message: types.Message, user_id):
         await i18n.get(
             key="messages.spending.awaiting_spending_desc",
             user_id=user_id
-        ))
+        ),
+        reply_markup=await cancel_button(user_id)
+    )
 
 
 async def handle_spending_desc(message: types.Message, user_id):
@@ -33,6 +35,7 @@ async def handle_spending_desc(message: types.Message, user_id):
             user_id=user_id
         ),
         parse_mode='Markdown',
+        reply_markup=await cancel_button(user_id)
     )
 
     cat = await get_category(user_id, desc)
@@ -47,7 +50,9 @@ async def handle_spending_value(message: types.Message, user_id):
             await i18n.get(
                 key="messages.error.ValueError",
                 user_id=user_id
-            ))
+            ),
+            reply_markup=await cancel_button(user_id)
+        )
 
     await set_temp_spending(user_id, amount)
     desc = await get_temp_desc(user_id)

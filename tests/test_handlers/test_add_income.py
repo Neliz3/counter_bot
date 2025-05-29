@@ -26,7 +26,7 @@ async def test_start_income(mock_i18n_get, mock_set_state, mock_answer):
     result = await add_income.start_income(message, user_id)
 
     mock_set_state.assert_awaited_with(user_id, "awaiting_income")
-    mock_answer.assert_awaited_with(expected_text)
+    assert mock_answer.await_args[0][0] == expected_text
     assert result is not None
 
 

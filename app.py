@@ -1,5 +1,5 @@
 import asyncio
-from config.config import dp, bot, commands
+from config.config import commands, get_bot, get_dp
 from telegram_bot.handlers import (
     manage_start as ms, statistics as st, user_input_handling as ui, categories as ct
 )
@@ -14,6 +14,9 @@ async def init_db():
 
 
 async def on_startup():
+    bot = get_bot()
+    dp = get_dp()
+
     await init_db()
 
     await bot.set_my_commands(commands)

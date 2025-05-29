@@ -6,15 +6,28 @@ from telegram_bot.keyboards.reply import (
     category_actions_keyboard,
     category_list_keyboard,
     confirm_keyboard,
+    cancel_button,
 )
 from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardRemove
 from database.mongo import get_category_names, delete_category_group, add_category_group
 from telegram_bot.handlers.manage_start import i18n
 from telegram_bot.filters.text_i18n import TextI18nFilter
+from database.redis import clear_state
 
 
 cat_router = Router()
+
+
+@cat_router.message(TextI18nFilter("buttons.cancel"))
+async def cancel_action(message: Message, state: FSMContext):
+    await message.answer(
+        await i18n.get(key="messages.cancel", user_id=message.from_user.id)
+    )
+    await message.delete()
+
+    await clear_state(message.from_user.id)
+    await state.clear()
 
 
 @cat_router.message(Command("cats"))
@@ -34,8 +47,11 @@ async def start_categories_dialog(message: Message, state: FSMContext):
 
 @cat_router.message(CategoryDialog.ChoosingAction, TextI18nFilter("buttons.add_cat"))
 async def ask_new_category_name(message: Message, state: FSMContext):
+    user_id = message.from_user.id
+
     await message.answer(
-        await i18n.get(key="messages.categories.ask_cat_name", user_id=message.from_user.id)
+        await i18n.get(key="messages.categories.ask_cat_name", user_id=message.from_user.id),
+        reply_markup=await cancel_button(user_id)
     )
     await state.set_state(CategoryDialog.Adding)
 
@@ -65,6 +81,7 @@ async def ask_for_keywords(message: Message, state: FSMContext):
             cat=cat,
             user_id=message.from_user.id),
         parse_mode='Markdown',
+        reply_markup=await cancel_button(message.from_user.id)
     )
     await state.set_state(CategoryDialog.AddingKeywords)
 

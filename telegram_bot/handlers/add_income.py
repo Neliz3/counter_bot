@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.types import ReplyKeyboardRemove
 from database.redis import set_state, clear_state, set_temp_income, get_temp_income
-from telegram_bot.keyboards.reply import confirm_keyboard
+from telegram_bot.keyboards.reply import confirm_keyboard, cancel_button
 from database.models import DailyStats
 from database import SessionLocal
 import datetime
@@ -15,7 +15,9 @@ async def start_income(message: types.Message, user_id):
         await i18n.get(
             key="messages.income.awaiting_income",
             user_id=user_id
-        ))
+        ),
+        reply_markup=await cancel_button(user_id)
+    )
 
 
 async def handle_income_value(message: types.Message, user_id):

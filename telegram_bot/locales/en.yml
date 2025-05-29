@@ -26,8 +26,8 @@ messages:
     ask_cat_name: "Enter the name of the new category:"
     confirm_new_name: "Add {new_name} to your categories?"
     ask_key_words: "Now enter keywords for the category {cat} (comma-separated).\n
-                    Example: `coffee, juice, tea` for Drinks."
-    success_add: "✅ Category {cat} added with keywords:"
+    Example: `coffee, juice, tea` for Drinks."
+    success_add: "✅ Category {cat} added with keywords: "
     ask_cat_del: "Choose a category to delete:"
     confirm_del: "Delete {cat}? This action cannot be undone."
     success_del: "✅ Deleted successfully."
@@ -65,3 +65,4 @@ messages:
 buttons:
   add_cat: "➕ Add"
   del_cat: "🗑 Delete"
+  cancel: "❌ Cancel"

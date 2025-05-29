@@ -18,9 +18,24 @@ async def confirm_keyboard(user_id: int):
 async def category_actions_keyboard(user_id: int):
     add_btn_str = await i18n.get(key="buttons.add_cat", user_id=user_id)
     del_btn_str = await i18n.get(key="buttons.del_cat", user_id=user_id)
+    cancel_btn_str = await i18n.get(key="buttons.cancel", user_id=user_id)
 
     return ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton(text=add_btn_str), KeyboardButton(text=del_btn_str)]],
+        keyboard=[[
+            KeyboardButton(text=add_btn_str),
+            KeyboardButton(text=del_btn_str),
+            KeyboardButton(text=cancel_btn_str)
+        ]],
+        resize_keyboard=True,
+        one_time_keyboard=True
+    )
+
+
+async def cancel_button(user_id: int):
+    cancel_btn_str = await i18n.get(key="buttons.cancel", user_id=user_id)
+
+    return ReplyKeyboardMarkup(
+        keyboard=[[KeyboardButton(text=cancel_btn_str)]],
         resize_keyboard=True,
         one_time_keyboard=True
     )

@@ -1,23 +1,21 @@
 # flake8: noqa
 
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
-from motor.motor_asyncio import AsyncIOMotorClient
 from config import config
 
 
 
 
 # === SQLAlchemy (PostgresQL) setup ===
-engine = create_engine(config.DATABASE_URL)
+engine = config.get_engine()
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 Base = declarative_base()
 
 
 # === MongoDB setup ===
-mongo_client = AsyncIOMotorClient(config.MONGO_URI)
-config.logger.debug(f"Connected to MongoDB at {config.MONGO_URI} and {config.MONGO_DB_NAME}")
-db = mongo_client[config.MONGO_DB_NAME]
+mongo_client = config.get_mongo_client()
+config.logger.debug(f"Connected to MongoDB")
+db = mongo_client[config.get_mongo_db_name()]
 categories_collection = db["user_categories"]
