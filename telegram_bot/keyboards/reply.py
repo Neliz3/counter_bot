@@ -11,7 +11,8 @@ async def confirm_keyboard(user_id: int):
             [KeyboardButton(text=yes), KeyboardButton(text=no)]
         ],
         resize_keyboard=True,
-        one_time_keyboard=True
+        one_time_keyboard=False,
+        is_persistent=True
     )
 
 
@@ -27,7 +28,8 @@ async def category_actions_keyboard(user_id: int):
             KeyboardButton(text=cancel_btn_str)
         ]],
         resize_keyboard=True,
-        one_time_keyboard=True
+        one_time_keyboard=False,
+        is_persistent=True
     )
 
 
@@ -37,12 +39,15 @@ async def cancel_button(user_id: int):
     return ReplyKeyboardMarkup(
         keyboard=[[KeyboardButton(text=cancel_btn_str)]],
         resize_keyboard=True,
-        one_time_keyboard=True
+        one_time_keyboard=False,
+        is_persistent=True
     )
 
 
 async def category_list_keyboard(categories):
     return ReplyKeyboardMarkup(
         keyboard=[[KeyboardButton(text=f'{cat}')] for cat in categories],
-        resize_keyboard=True
+        resize_keyboard=True,
+        one_time_keyboard=False,
+        is_persistent=True
     )

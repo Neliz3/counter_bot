@@ -43,9 +43,9 @@ messages:
     total_income: "💰 Total Income"
     total_spent: "❌ Total Spending"
     remaining: "📌 Remaining"
-    percentage: "% of Total"
+    percentage: "%"
 
-    error: "No expenses recorded today."
+    error: "No expenses/incomes recorded today."
 
   reminder:
     msg: "💰 Don't forget to add your transactions for today!"
@@ -58,6 +58,7 @@ messages:
 
   error:
     default: "Oops! Something went wrong. Please try again."
+    TextError: "Please enter not a number."
     ValueError: "Please enter a valid number."
     nonexistent: "Please type Yes or No."
 

@@ -5,16 +5,13 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import BotCommand
 from sqlalchemy import create_engine, Engine
 from motor.motor_asyncio import AsyncIOMotorClient
-import os
 from dotenv import load_dotenv
+import os
 import logging
 import betterlogging as bl
 import sys
 
-
-# Initialize environment variables
 load_dotenv()
-
 
 # Logging setup
 log_level = logging.INFO
@@ -73,7 +70,7 @@ def get_mongo_client() -> AsyncIOMotorClient:
 
 
 def get_mongo_db_name() -> str:
-    mongo_db_name = os.getenv("MONGO_DB_NAME")
+    mongo_db_name = os.getenv("MONGO_DB")
     if not mongo_db_name:
-        raise ValueError("MONGO_DB_NAME environment variable not set")
+        raise ValueError("MONGO_DB environment variable not set")
     return mongo_db_name

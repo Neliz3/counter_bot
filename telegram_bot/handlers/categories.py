@@ -21,10 +21,17 @@ cat_router = Router()
 
 @cat_router.message(TextI18nFilter("buttons.cancel"))
 async def cancel_action(message: Message, state: FSMContext):
+    user_id = message.from_user.id
+
     await message.answer(
-        await i18n.get(key="messages.cancel", user_id=message.from_user.id)
+        await i18n.get(key="messages.cancel", user_id=user_id),
+        reply_markup=ReplyKeyboardRemove()
     )
     await message.delete()
+
+    await message.answer(
+        await i18n.get(key="messages.start.help", user_id=user_id),
+    )
 
     await clear_state(message.from_user.id)
     await state.clear()

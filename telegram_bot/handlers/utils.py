@@ -26,6 +26,16 @@ async def get_today_stats(session, user_id):
                       .scalar()
                   ) or 0.0
 
+    # Total income for the day
+    total_today_income = (
+        session.query(func.sum(DailyStats.income))
+        .filter(
+            DailyStats.user_id == user_id,
+            DailyStats.date == today,
+        )
+        .scalar()
+    ) or 0.0
+
     # Total income for this month
     total_month_income = (
         session.query(func.sum(DailyStats.income))
@@ -40,7 +50,7 @@ async def get_today_stats(session, user_id):
     # Remaining = all income for the month - today’s spending
     remaining = total_month_income - total_spent
 
-    return spending_data, total_spent, remaining
+    return spending_data, total_spent, remaining, total_today_income
 
 
 async def get_monthly_stats(session, user_id, year, month):

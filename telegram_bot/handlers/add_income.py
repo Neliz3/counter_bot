@@ -22,7 +22,9 @@ async def start_income(message: types.Message, user_id):
 
 async def handle_income_value(message: types.Message, user_id):
     try:
-        income = float(message.text.strip())
+        text = (message.text.strip()
+                .replace(',', '.').replace("+", "").replace("-", ""))
+        income = round(float(text), 2)
     except ValueError:
         return await message.answer(
             await i18n.get(

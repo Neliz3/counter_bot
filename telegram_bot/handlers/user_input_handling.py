@@ -25,12 +25,17 @@ async def handle_add_spending(message: types.Message):
 async def handle_cancel(message: types.Message):
     user_id = message.from_user.id
 
+    await clear_state(user_id)
     await message.answer(
         await i18n.get(key="messages.cancel", user_id=message.from_user.id),
         reply_markup=ReplyKeyboardRemove()
     )
+
     await message.delete()
-    await clear_state(user_id)
+
+    await message.answer(
+        await i18n.get(key="messages.start.help", user_id=user_id),
+    )
 
 
 @user_input_router.message()

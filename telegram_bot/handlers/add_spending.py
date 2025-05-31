@@ -24,7 +24,18 @@ async def start_spending(message: types.Message, user_id):
 
 
 async def handle_spending_desc(message: types.Message, user_id):
-    desc = message.text
+    try:
+        desc = message.text.strip()
+        if desc.replace('.', '', 1).lstrip('+-').isdigit():
+            raise ValueError
+    except ValueError:
+        return await message.answer(
+            await i18n.get(
+                key="messages.error.TextError",
+                user_id=user_id
+            )
+        )
+
     await set_temp_desc(user_id, desc)
     await set_state(user_id, "awaiting_spending_amount")
 
@@ -44,14 +55,15 @@ async def handle_spending_desc(message: types.Message, user_id):
 
 async def handle_spending_value(message: types.Message, user_id):
     try:
-        amount = float(message.text)
+        text = (message.text.strip()
+                .replace(',', '.').replace("+", "").replace("-", ""))
+        amount = round(float(text), 2)
     except ValueError:
         return await message.answer(
             await i18n.get(
                 key="messages.error.ValueError",
                 user_id=user_id
-            ),
-            reply_markup=await cancel_button(user_id)
+            )
         )
 
     await set_temp_spending(user_id, amount)

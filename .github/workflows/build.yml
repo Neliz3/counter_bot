@@ -2,7 +2,7 @@ name: Development CI/CD
 on: [push]
 
 jobs:
-  lint:
+  ci:
     runs-on: ubuntu-latest
     steps:
       # Check out the repository code
