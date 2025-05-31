@@ -1,98 +1,109 @@
-# Counter-hack Bot
+# Counter Bot 💰
 
-#### Telegram Bot for dealing with Google Sheets in Python using sqlite3, python-telegram-bot and gspread library
-[Counter-hack](https://t.me/counter_hack_bot) helps to count money (or something else in future) getting numbers and categories from a user.
+A Telegram bot for managing personal finances, including income tracking, expense logging, category management,
+statistics, and more. It supports multilingual features and uses both MongoDB and Redis for data management and caching.
 
-* [Sqlite3](https://docs.python.org/3/library/sqlite3.html) database is used for data storage.
+---
 
-* The bot, receiving a request from the user, processes it using the [python-telegram-bot](https://pypi.org/project/python-telegram-bot/#introduction)
-  library, which interacts with the Telegram bot API.
+## 📁 Project Structure
 
-* [gspread](https://docs.gspread.org/en/latest/index.html) is a Python API for Google Sheets.
-
-
-## Table of contents
-* [How to use it](#How-to-use-it)
-* [Setup](#Setup)
-    * [Technologies Used](#Technologies-Used)
-    * [Installation](#Installation)
-    * [Step by step installation](#Step-by-step-installation)
-    * [Project status](#Project-status)
-    * [Room for improvement](#Room-for-improvement)
-        * [Future features](#Future-features)
-        * [Future changing](#Future-changing)
-
-## How to use it
-1. Open [Google Sheets template](https://docs.google.com/spreadsheets/d/1C-Z0OPYnyKPSjn8_YvrpE4uFIPiw0xQrSTn2OHhPVO4/edit#gid=1785411570)
-2. Click 'Share access' for editing with
-`telegram-bot-service@counter-bot-361806.iam.gserviceaccount.com`
-3. Copy URL of a page and send it to [Counter-hack bot](https://t.me/counter_hack_bot)
-
-
-## Setup
-* All packages are located in requirements.txt
-* Environmental variables are located in .env
-  (you must change example.env file)
-  
-
-### Technologies Used
-* Python 3.8
-* sqlite3
-* python-telegram-bot
-* gspread
-
-### Installation
-```python3 -m venv env```
-
-
-```. env/bin/activate```
-
-
-```pip install -r requirements.txt```
-
-
-### Step by step installation
-Install [python-telegram-bot](https://pypi.org/project/python-telegram-bot/#introduction)
-library
-
-```bash
-pip install python-telegram-bot --upgrade
+```
+.
+├── app.py                       # Entry point
+├── config/                      # Configuration files
+├── database/                    # Database models and integrations (MongoDB, Redis)
+├── telegram_bot/                # Bot logic: handlers, filters, keyboards, localization, etc.
+├── tests/                       # Unit tests
+├── example.env                  # Example environment variables
+├── requirements.txt             # Python dependencies
+└── README.md
 ```
 
-Then install ...
+---
+
+## 🚀 How to Launch the Bot
+
+### 1. **Clone the Repository**
 
 ```bash
-pip install telegram
+git clone https://github.com/Neliz3/counter_bot.git
+cd counter_bot
 ```
 
-Then library for getting environmental variables:
+### 2. **Create and Activate a Virtual Environment**
 
 ```bash
-pip install python-dotenv
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-Install [a gspread library](https://docs.gspread.org/en/latest/index.html) (a Python API for Google Sheets)
+### 3. **Install Requirements**
 
 ```bash
-pip install gspread
+pip install -r requirements.txt
 ```
 
+### 4. **Configure Environment Variables**
 
-### Project status
-Project is in progress
+Copy `.env` from the example:
 
-### Room for improvement
-#### Future features
-* Adding new languages
-* Adding feature for an admin to get more statistic information
-* Bot will create its own table with all values, user need only click start, pass authentication and choose a template
+```bash
+cp example.env .env
+```
 
-#### Future changing
-* Replace polling with webhook
-* Check if the name of a sheet is equal to a month and create a new one if not
+Edit `.env` and fill in the required values (e.g., `BOT_TOKEN`, `MONGO_URI`, `REDIS_URL`, etc.).
 
+### 5. **Run the Bot**
 
-##### How to add new language?
-1. Add `{lang_code}.yml` to `telegram_bot/locales`
-2. Add `category_{lang_code}.yml` to `telegram_bot/locales/default_categories`
-3. Add {lang_code} to `LANGUAGES` tuple in `config/config.py`
+```bash
+python app.py
+```
+
+---
+
+## ⚙️ Used Technologies
+
+* **Python 3.10+**
+* **MongoDB** – persistent data storage
+* **Redis** – caching and user state management
+* **aiogram** – asynchronous Telegram bot framework
+* **pytest** – for testing
+
+---
+
+## 🧠 Bot Features & Commands
+
+| Command         | Description                                 |
+| --------------- | ------------------------------------------- |
+| `/start`        | Starts the bot and initializes user session |
+| `/add_income`   | Add a new income entry                      |
+| `/add_spending` | Add a new expense                           |
+| `/categories`   | Manage and view spending/income categories  |
+| `/statistics`   | View financial statistics                   |
+| `/cancel`       | Cancel the current action                   |
+
+---
+
+## 🥪 Running Tests
+
+```bash
+pytest tests/
+```
+
+---
+
+## 🔮 Future Updates
+
+### ✅ Income Setup
+
+* Create and manage recurring or scheduled income types (e.g. salary, passive income).
+
+### 🚨 Over-Budget Flags
+
+* Notifications or visual indicators when spending exceeds a budgeted amount.
+
+### 📝 Edit Last Entry
+
+* Modify the most recent spending or income transaction for quick corrections.
+
+---
